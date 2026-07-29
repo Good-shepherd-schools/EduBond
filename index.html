@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edubond – Learn. Teach. Connect.</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--pr:#1B4FD8;--pr-l:#EEF3FF;--pr-d:#0F2E8A;--ac:#F59E0B;--ac-l:#FFFBEB;--gr:#059669;--gr-l:#ECFDF5;--rd:#DC2626;--rd-l:#FEF2F2;--pu:#7C3AED;--pu-l:#F5F3FF;--bg:#F7F8FC;--wh:#fff;--tx:#111827;--tm:#6B7280;--tl:#9CA3AF;--br:#E5E7EB;--brd:#D1D5DB;--nav:64px;--sb:240px;--r:10px;--rl:16px;--s1:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);--s2:0 4px 12px rgba(0,0,0,.09)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0F2E8A 0%,#312E81 50%,#1B4FD8 100%);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.login-box{background:#fff;border-radius:20px;padding:40px;width:100%;max-width:420px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo .logo-icon{width:64px;height:64px;background:var(--pr);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.login-logo h1{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--pr)}
+.login-logo p{font-size:13px;color:var(--tm);margin-top:4px}
+.role-tabs{display:flex;gap:8px;margin-bottom:20px}
+.role-tab{flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--br);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:.15s}
+.role-tab.active{border-color:var(--pr);background:var(--pr-l);color:var(--pr)}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+.form-input{width:100%;border:1px solid var(--br);border-radius:var(--r);padding:10px 12px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;background:#fff}
+.form-input:focus{border-color:var(--pr);box-shadow:0 0 0 3px rgba(27,79,216,.1)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;transition:.15s;border:none;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--pr);color:#fff}.btn-primary:hover{background:var(--pr-d)}
+.btn-outline{background:#fff;color:var(--pr);border:1px solid var(--pr)}.btn-outline:hover{background:var(--pr-l)}
+.btn-ghost{background:transparent;color:var(--tm);border:1px solid var(--br)}.btn-ghost:hover{background:var(--bg)}
+.btn-danger{background:var(--rd);color:#fff}.btn-danger:hover{background:#B91C1C}
+.btn-green{background:var(--gr);color:#fff}.btn-green:hover{background:#047857}
+.btn-amber{background:var(--ac);color:#fff}
+.btn-sm{padding:6px 12px;font-size:13px}
+.btn-xs{padding:4px 9px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--br);display:flex;align-items:center;padding:0 20px;gap:10px}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--pr);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-logo .logo-dot{color:var(--ac)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nav-link{font-size:13px;font-weight:500;color:var(--tm);padding:6px 10px;border-radius:8px;cursor:pointer;transition:.15s;border:none;background:none}
+.nav-link:hover,.nav-link.active{background:var(--pr-l);color:var(--pr)}
+.nav-sp{flex:1}
+.user-pill{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:4px 12px 4px 6px}
+.user-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:'Space Grotesk',sans-serif}
+.user-name{font-size:13px;font-weight:600}
+.user-role-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.4px}
+.rb-admin{background:#FEE2E2;color:#991B1B}
+.rb-teacher{background:#FEF3C7;color:#92400E}
+.rb-student{background:#DCFCE7;color:#166534}
+.btn-signout{font-size:12px;font-weight:600;padding:5px 10px;border-radius:8px;cursor:pointer;border:1px solid var(--br);background:#fff;color:var(--tm);transition:.15s}
+.btn-signout:hover{background:var(--rd-l);color:var(--rd);border-color:var(--rd)}
+
+/* LAYOUT */
+#appWrap{display:flex;padding-top:var(--nav);min-height:100vh}
+#sidebar{width:var(--sb);flex-shrink:0;position:fixed;top:var(--nav);left:0;bottom:0;background:#fff;border-right:1px solid var(--br);overflow-y:auto;padding:16px 10px}
+.sb-sec{margin-bottom:20px}
+.sb-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--tl);padding:0 8px;margin-bottom:6px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:.15s;font-size:13px;color:var(--tm);font-weight:500}
+.sb-item:hover{background:var(--bg);color:var(--tx)}
+.sb-item.active{background:var(--pr-l);color:var(--pr)}
+.sb-item .icon{font-size:16px;width:18px;text-align:center}
+.sb-badge{margin-left:auto;background:var(--rd);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+
+/* MAIN */
+#main{margin-left:var(--sb);flex:1;min-width:0;padding:24px 28px}
+.page{display:none}.page.active{display:block}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--br);border-radius:var(--rl);padding:18px;box-shadow:var(--s1)}
+.cg2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.cg3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.cg4{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+
+/* HERO / LANDING */
+.hero-banner{background:linear-gradient(135deg,#1B4FD8 0%,#0F2E8A 60%,#312E81 100%);border-radius:var(--rl);padding:32px;color:#fff;margin-bottom:22px}
+.hero-banner h1{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
+.hero-banner p{font-size:14px;opacity:.85;margin-bottom:18px;line-height:1.7;max-width:600px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:22px}
+.about-card{background:#fff;border:1px solid var(--br);border-radius:var(--rl);padding:18px;text-align:center;box-shadow:var(--s1)}
+.about-icon{font-size:32px;margin-bottom:10px}
+.about-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px}
+.about-desc{font-size:12px;color:var(--tm);line-height:1.6}
+
+/* STAT */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid var(--br);border-radius:var(--r);padding:14px;box-shadow:var(--s1)}
+.stat-val{font-size:24px;font-weight:700;font-family:'Space Grotesk',sans-serif;line-height:1;margin-bottom:3px}
+.stat-lbl{font-size:12px;color:var(--tm)}
+
+/* FILE CARDS */
+.file-card{background:#fff;border:1px solid var(--br);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start;transition:box-shadow .15s}
+.file-card:hover{box-shadow:var(--s2)}
+.file-icon{width:42px;height:42px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+.fi-pdf{background:#FEE2E2;color:#DC2626}.fi-doc{background:#DBEAFE;color:#1D4ED8}.fi-vid{background:#EDE9FE;color:#7C3AED}.fi-quiz{background:#FEF3C7;color:#D97706}
+.file-meta{flex:1;min-width:0}
+.file-name{font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-info{font-size:11px;color:var(--tm);display:flex;gap:10px;flex-wrap:wrap}
+.file-actions{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--brd);border-radius:var(--rl);padding:32px;text-align:center;cursor:pointer;transition:.2s;background:var(--bg)}
+.upload-zone:hover{border-color:var(--pr);background:var(--pr-l)}
+.upload-zone input[type=file]{display:none}
+.upload-zone .uz-icon{font-size:32px;margin-bottom:10px;color:var(--tl)}
+.upload-zone h3{font-size:15px;font-weight:600;margin-bottom:5px}
+.upload-zone p{font-size:12px;color:var(--tm)}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--br)}
+.tab{padding:9px 14px;font-size:13px;font-weight:500;color:var(--tm);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px}
+.tab.active{color:var(--pr);border-bottom-color:var(--pr)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+.tb{background:#DBEAFE;color:#1D4ED8}.tg{background:#DCFCE7;color:#166534}.ta{background:#FEF3C7;color:#92400E}.tp{background:#EDE9FE;color:#5B21B6}.tr{background:#FEE2E2;color:#991B1B}
+
+/* FORUM */
+.forum-post{display:flex;gap:10px;padding:14px 0;border-bottom:1px solid var(--br)}
+.forum-post:last-child{border-bottom:none}
+.fav{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:'Space Grotesk',sans-serif}
+.fauth{font-size:13px;font-weight:600;margin-bottom:2px}
+.ftime{font-size:11px;color:var(--tl);margin-bottom:5px}
+.ftext{font-size:13px;color:var(--tm);line-height:1.6}
+.factions{display:flex;gap:10px;margin-top:7px}
+.faction-btn{background:none;border:none;font-size:11px;color:var(--tl);cursor:pointer;display:flex;align-items:center;gap:3px;padding:0;transition:color .15s}
+.faction-btn:hover{color:var(--pr)}
+.forum-input{flex:1;border:1px solid var(--br);border-radius:var(--r);padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;resize:none;min-height:42px;max-height:100px;outline:none;transition:border-color .15s}
+.forum-input:focus{border-color:var(--pr)}
+
+/* QUIZ */
+.quiz-card{background:#fff;border:1px solid var(--br);border-radius:var(--rl);padding:20px;margin-bottom:14px}
+.quiz-q{font-size:15px;font-weight:600;margin-bottom:14px;line-height:1.5}
+.quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--br);border-radius:var(--r);margin-bottom:7px;cursor:pointer;transition:.15s;font-size:13px}
+.quiz-opt:hover{border-color:var(--pr);background:var(--pr-l)}
+.quiz-opt.selected{border-color:var(--pr);background:var(--pr-l);color:var(--pr);font-weight:500}
+.quiz-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--br);flex-shrink:0}
+.quiz-opt.selected .quiz-radio{border-color:var(--pr);background:var(--pr)}
+.qprog{display:flex;gap:4px;margin-bottom:18px}
+.qdot{height:4px;flex:1;border-radius:2px;background:var(--br)}
+.qdot.done{background:var(--pr)}.qdot.cur{background:var(--ac)}
+
+/* INVENTOR */
+.inv-card{background:#fff;border:1px solid var(--br);border-radius:var(--rl);overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer}
+.inv-card:hover{box-shadow:var(--s2);transform:translateY(-2px)}
+.inv-banner{height:70px}
+.inv-av-wrap{margin-top:-28px;padding-bottom:4px;text-align:center}
+.inv-av{width:56px;height:56px;border-radius:50%;border:3px solid #fff;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;font-family:'Space Grotesk',sans-serif}
+.inv-name{font-size:14px;font-weight:700;margin-bottom:2px;font-family:'Space Grotesk',sans-serif;text-align:center;padding:0 12px}
+.inv-role{font-size:11px;color:var(--tm);margin-bottom:8px;text-align:center}
+.inv-proj{font-size:11px;color:var(--tm);padding:8px 12px;border-top:1px solid var(--br);line-height:1.5}
+.inv-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;padding:0 10px 12px}
+.inv-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--pr-l);color:var(--pr);font-weight:500}
+
+/* PAGE HEADER */
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:10px;flex-wrap:wrap}
+.ptitle{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.3px}
+.psub{font-size:13px;color:var(--tm);margin-top:2px}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-ov.open{display:flex}
+.modal{background:#fff;border-radius:var(--rl);padding:24px;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mt{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700}
+.mc{background:none;border:none;font-size:20px;cursor:pointer;color:var(--tm);padding:4px;line-height:1}
+
+/* CHIPS */
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chips::-webkit-scrollbar{height:3px}
+.chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1.5px solid var(--br);cursor:pointer;white-space:nowrap;transition:.15s}
+.chip.active{border-color:var(--pr);background:var(--pr-l);color:var(--pr)}
+
+/* MISC */
+.divider{border:none;border-top:1px solid var(--br);margin:16px 0}
+.flex{display:flex}.fc{display:flex;align-items:center}
+.gap2{gap:8px}.gap3{gap:12px}
+.mt1{margin-top:8px}.mt2{margin-top:16px}.mt3{margin-top:22px}
+.mb1{margin-bottom:8px}.mb2{margin-bottom:14px}
+.tm{color:var(--tm)}.ts{font-size:13px}.wf{width:100%}
+.fs{font-family:'Space Grotesk',sans-serif}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236B7280' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.toast{position:fixed;bottom:22px;right:22px;z-index:500;background:#111827;color:#fff;padding:11px 16px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:var(--s2);transform:translateY(70px);opacity:0;transition:.3s;display:flex;align-items:center;gap:7px}
+.toast.show{transform:translateY(0);opacity:1}
+.news-card{background:#fff;border:1px solid var(--br);border-radius:var(--r);padding:14px;display:flex;gap:12px}
+.nb{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:4px;margin-bottom:5px}
+.nb-news{background:#DBEAFE;color:#1D4ED8}.nb-art{background:#ECFDF5;color:#065F46}.nb-sci{background:#F5F3FF;color:#5B21B6}
+.confirm-zone{background:var(--rd-l);border:1px solid #FECACA;border-radius:var(--r);padding:14px;margin-top:12px;font-size:13px;color:var(--rd);display:none}
+
+/* Admin controls */
+.admin-badge{display:inline-flex;align-items:center;gap:4px;background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
+.delete-btn{background:none;border:none;cursor:pointer;color:var(--tl);padding:4px;border-radius:6px;transition:.15s;font-size:14px}
+.delete-btn:hover{background:var(--rd-l);color:var(--rd)}
+
+@media(max-width:768px){#sidebar{display:none}#sidebar.mobile-open{display:block;z-index:150;box-shadow:var(--s2)}#main{margin-left:0;padding:14px}.nav-links{display:none}.mobile-menu-btn{display:inline-flex !important}.mobile-overlay.show{display:block}}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--tx);padding:4px 10px;border-radius:8px}
+.mobile-menu-btn:hover{background:var(--bg)}
+.mobile-overlay{display:none;position:fixed;inset:0;top:var(--nav);background:rgba(0,0,0,.4);z-index:140}
+</style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL = 'https://ejfbvlxjhcqrvcfundfu.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqZmJ2bHhqaGNxcnZjZnVuZGZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NTk3ODcsImV4cCI6MjEwMDMzNTc4N30._EF8kcysZinJJAdlm59-MnsTGjcO3TOGpG2xeq2KuJo';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+<body>
+
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-icon">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+          <path d="M9 25L17 10l8 15H9z" fill="#F59E0B"/>
+          <circle cx="17" cy="10" r="3" fill="white"/>
+        </svg>
+      </div>
+      <h1>Edu<span style="color:var(--ac)">bond</span></h1>
+      <p>Learn. Teach. Connect.</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="loginEmail" type="email" placeholder="Enter your email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="loginPass" type="password" placeholder="Enter your password">
+    </div>
+    <button class="btn btn-primary btn-full" style="margin-top:6px" onclick="doLogin()">Sign In →</button>
+    <div id="loginError" style="display:none;margin-top:12px;background:var(--rd-l);border:1px solid #FECACA;color:var(--rd);border-radius:var(--r);padding:10px 12px;font-size:12px"></div>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--tm)">
+      New to Edubond? <a href="#" onclick="showAuthScreen('signup');return false;" style="color:var(--pr);font-weight:600;text-decoration:none">Create an account</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SIGN UP SCREEN ═══════════════ -->
+<div id="signupScreen" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0F2E8A 0%,#312E81 50%,#1B4FD8 100%);align-items:center;justify-content:center;z-index:9999;padding:20px">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-icon">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+          <path d="M9 25L17 10l8 15H9z" fill="#F59E0B"/>
+          <circle cx="17" cy="10" r="3" fill="white"/>
+        </svg>
+      </div>
+      <h1>Edu<span style="color:var(--ac)">bond</span></h1>
+      <p>Create your account</p>
+    </div>
+    <div class="role-tabs">
+      <div class="role-tab active" onclick="selectSignupRole('teacher',this)">👩‍🏫 Teacher</div>
+      <div class="role-tab" onclick="selectSignupRole('student',this)">🎓 Student</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input class="form-input" id="suName" type="text" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="suEmail" type="email" placeholder="Enter your email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="suPass" type="password" placeholder="Create a password">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirm Password</label>
+      <input class="form-input" id="suPass2" type="password" placeholder="Re-enter your password">
+    </div>
+    <button class="btn btn-primary btn-full" style="margin-top:6px" onclick="doSignup()">Create Account →</button>
+    <div id="signupError" style="display:none;margin-top:12px;background:var(--rd-l);border:1px solid #FECACA;color:var(--rd);border-radius:var(--r);padding:10px 12px;font-size:12px"></div>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--tm)">
+      Already have an account? <a href="#" onclick="showAuthScreen('login');return false;" style="color:var(--pr);font-weight:600;text-decoration:none">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="nav" style="display:none">
+  <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Menu">☰</button>
+  <a class="nav-logo" href="#" onclick="navigate('dashboard')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="var(--pr)"/><path d="M6 18L12 7l6 11H6z" fill="#F59E0B"/><circle cx="12" cy="7" r="2" fill="white"/></svg>
+    Edu<span class="logo-dot">bond</span>
+  </a>
+  <div class="nav-links">
+    <button data-page="dashboard" class="nav-link active" onclick="navigate('dashboard')">Home</button>
+    <button data-page="notes" class="nav-link" onclick="navigate('notes')">Notes</button>
+    <button data-page="quiz" class="nav-link" onclick="navigate('quiz')">Quizzes</button>
+    <button data-page="askai" class="nav-link" onclick="navigate('askai')">🤖 Ask AI</button>
+    <button data-page="forum" class="nav-link" onclick="navigate('forum')">Forum</button>
+    <button data-page="inventors" class="nav-link" onclick="navigate('inventors')">🔬 Inventors</button>
+  </div>
+  <div class="nav-sp"></div>
+  <div class="user-pill">
+    <div class="user-av" id="navAv"></div>
+    <span class="user-name" id="navName"></span>
+    <span class="user-role-badge" id="navRole"></span>
+  </div>
+  <button class="btn-signout" onclick="signOut()">Sign Out</button>
+</nav>
+
+<!-- ═══════════════ APP WRAP ═══════════════ -->
+<div id="appWrap" style="display:none">
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+<aside id="sidebar">
+  <div class="sb-sec">
+    <div class="sb-label">Main</div>
+    <div data-page="dashboard" class="sb-item active" onclick="navigate('dashboard')"><span class="icon">🏠</span> Dashboard</div>
+    <div data-page="notes" class="sb-item" onclick="navigate('notes')"><span class="icon">📚</span> Class Notes<span class="sb-badge" id="sbNotes">5</span></div>
+    <div data-page="enotes" class="sb-item" onclick="navigate('enotes')"><span class="icon">📄</span> E-Notes</div>
+    <div data-page="quiz" class="sb-item" onclick="navigate('quiz')"><span class="icon">✏️</span> Quizzes<span class="sb-badge" id="sbQuiz">1</span></div>
+    <div data-page="videos" class="sb-item" onclick="navigate('videos')"><span class="icon">🎬</span> Video Links</div>
+    <div data-page="askai" class="sb-item" onclick="navigate('askai')"><span class="icon">🤖</span> Ask AI Tutor</div>
+    <div data-page="rewards" class="sb-item" onclick="navigate('rewards')"><span class="icon">💎</span> Rewards<span class="sb-badge" id="sbGems">0</span><span class="sb-badge" id="sbStreak" style="background:var(--rd);margin-left:4px">🔥0</span></div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-label">Community</div>
+    <div data-page="forum" class="sb-item" onclick="navigate('forum')"><span class="icon">💬</span> Forum<span class="sb-badge" id="sbForum">0</span></div>
+    <div data-page="news" class="sb-item" onclick="navigate('news')"><span class="icon">📰</span> News</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-label">Special</div>
+    <div data-page="inventors" class="sb-item" onclick="navigate('inventors')"><span class="icon">🔬</span> <strong>Inventors</strong></div>
+    <div data-page="admin" class="sb-item" id="sbAdmin" style="display:none" onclick="navigate('admin')"><span class="icon">🛡</span> Admin Panel</div>
+    <div data-page="report" class="sb-item" onclick="navigate('report')"><span class="icon">🚩</span> Report</div>
+  </div>
+</aside>
+
+<main id="main">
+
+<!-- ══ DASHBOARD ══ -->
+<div class="page active" id="page-dashboard">
+  <!-- ABOUT SECTION -->
+  <div style="background:linear-gradient(135deg,#1B4FD8 0%,#0F2E8A 60%,#312E81 100%);border-radius:var(--rl);padding:30px;color:#fff;margin-bottom:18px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7;margin-bottom:6px">Welcome to</div>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:10px">Edubond – Learn. Teach. Connect.</h1>
+    <p style="font-size:14px;opacity:.85;line-height:1.75;max-width:640px;margin-bottom:20px">Edubond is a smart school platform built for <strong>Nigerian secondary schools</strong>. Teachers upload class notes, create daily quizzes, and share video links — while students learn, collaborate in the forum, read today's education news, and explore a dedicated hall of student inventors. Everything is in one place, on any device.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:20px">
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;font-size:13px"><span style="font-size:20px;display:block;margin-bottom:4px">📚</span><strong>Class Notes & E-Notes</strong><br><span style="opacity:.75;font-size:12px">Upload & download materials</span></div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;font-size:13px"><span style="font-size:20px;display:block;margin-bottom:4px">✏️</span><strong>Daily Quizzes</strong><br><span style="opacity:.75;font-size:12px">Test knowledge every day</span></div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;font-size:13px"><span style="font-size:20px;display:block;margin-bottom:4px">💬</span><strong>Forum & Chat</strong><br><span style="opacity:.75;font-size:12px">Ask questions, share ideas</span></div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;font-size:13px"><span style="font-size:20px;display:block;margin-bottom:4px">🔬</span><strong>Inventors Hall</strong><br><span style="opacity:.75;font-size:12px">Celebrate student innovators</span></div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-amber btn-sm" onclick="navigate('notes')">📚 Browse Notes</button>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)" onclick="navigate('inventors')">🔬 Inventors Hall</button>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">👩‍🎓</div><div class="stat-val" style="color:var(--pr)" id="statStudents">0</div><div class="stat-lbl">Students</div></div>
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">📁</div><div class="stat-val" style="color:var(--pu)" id="statNotes">0</div><div class="stat-lbl">Notes Uploaded</div></div>
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">💬</div><div class="stat-val" style="color:var(--ac)" id="statForum">0</div><div class="stat-lbl">Forum Posts</div></div>
+  </div>
+
+  <div class="cg2">
+    <div class="card">
+      <div class="fc gap2 mb2"><span style="font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif">📌 Recent Notes</span><button class="btn btn-outline btn-xs" style="margin-left:auto" onclick="navigate('notes')">See all</button></div>
+      <div id="dashNotesList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="card">
+      <div class="fc gap2 mb2"><span style="font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif">🔬 Featured Inventors</span><button class="btn btn-outline btn-xs" style="margin-left:auto" onclick="navigate('inventors')">View all</button></div>
+      <div id="dashInvList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="fc gap2 mb2"><span style="font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif">🌟 Top Contributors</span><button class="btn btn-outline btn-xs" style="margin-left:auto" onclick="navigate('rewards')">Earn your spot</button></div>
+    <div id="topContributorsList" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:4px"></div>
+  </div>
+</div>
+
+<!-- ══ NOTES ══ -->
+<div class="page" id="page-notes">
+  <div class="ph">
+    <div><h1 class="ptitle">📚 Class Notes</h1><p class="psub">Upload and download course materials</p></div>
+    <button class="btn btn-primary btn-sm" id="uploadNoteBtn" onclick="openUploadModal()">+ Upload Note</button>
+  </div>
+  <div class="chips" id="notesChips">
+    <div class="chip active" onclick="filterChip(this,'notesChips','all')">All</div>
+  </div>
+  <div id="notesList" style="display:flex;flex-direction:column;gap:10px"></div>
+</div>
+
+<!-- ══ E-NOTES ══ -->
+<div class="page" id="page-enotes">
+  <div class="ph">
+    <div><h1 class="ptitle">📄 E-Notes</h1><p class="psub">Digital notes created on Edubond</p></div>
+    <button class="btn btn-primary btn-sm" id="createEnoteBtn" onclick="openEnoteModal()">+ Create E-Note</button>
+  </div>
+  <div id="enotesList" class="cg2"></div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="page" id="page-quiz">
+  <div class="ph">
+    <div><h1 class="ptitle">✏️ Daily Quizzes</h1><p class="psub">Test your knowledge</p></div>
+    <button class="btn btn-primary btn-sm" id="createQuizBtn" onclick="openCreateQuizModal()">+ Create Quiz</button>
+  </div>
+  <div class="tabs">
+    <div class="tab active" id="quizTabTake" onclick="switchTab('quiz','take',this)">Take a Quiz</div>
+    <div class="tab" id="quizTabResults" onclick="switchTab('quiz','results',this)">My Results</div>
+  </div>
+  <div class="tab-panel active" id="quiz-take">
+    <div id="quizListWrap" class="cg2"></div>
+    <div id="quizActiveWrap" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <div style="background:var(--pr-l);border-radius:var(--r);padding:11px 14px;font-size:13px;color:var(--pr)" id="quizActiveMeta">📌 <strong></strong></div>
+        <div style="background:var(--ac-l);color:var(--ac);border-radius:var(--r);padding:9px 14px;font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif" id="quizTimer">⏱ 00:00</div>
+      </div>
+      <div class="qprog" id="quizProg"></div>
+      <div class="quiz-card">
+        <div style="font-size:11px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px" id="quizQMeta"></div>
+        <div class="quiz-q" id="quizQText"></div>
+        <div id="quizOpts"></div>
+        <div id="quizExplainBox" style="display:none;background:var(--bg);border-radius:var(--r);padding:12px 14px;margin-top:12px;font-size:13px;line-height:1.6"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="quitQuiz()">✕ Exit Quiz</button>
+          <button class="btn btn-primary btn-sm" id="quizNextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="quiz-results">
+    <div id="quizResultsList"></div>
+  </div>
+</div>
+
+<!-- ══ ASK AI ══ -->
+<div class="page" id="page-askai">
+  <div class="ph"><div><h1 class="ptitle">🤖 Ask AI Tutor</h1><p class="psub">Get instant, step-by-step help with any subject</p></div></div>
+  <div id="aiStatusBanner" class="ts tm" style="margin-bottom:10px"></div>
+  <div class="card" style="display:flex;flex-direction:column;height:540px;padding:14px">
+    <div id="aiChatBox" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:4px 6px 10px"></div>
+    <div style="display:flex;gap:9px;padding-top:10px;border-top:1px solid var(--br);align-items:flex-end">
+      <textarea class="forum-input" id="aiInput" placeholder="Ask a question about any subject…" rows="1" oninput="autoR(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();askAI();}"></textarea>
+      <button class="btn btn-primary btn-sm" id="aiSendBtn" onclick="askAI()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FORUM ══ -->
+<div class="page" id="page-forum">
+  <div class="ph">
+    <div><h1 class="ptitle">💬 Forum & Chat</h1><p class="psub">Ask questions, share ideas</p></div>
+    <button class="btn btn-primary btn-sm" onclick="showToast('New topic — coming soon!')">+ New Topic</button>
+  </div>
+  <div class="card">
+    <div id="forumPosts"></div>
+    <div style="display:flex;gap:9px;padding-top:14px;align-items:flex-end">
+      <div class="fav" id="forumSelfAv" style="background:var(--pr)">AD</div>
+      <textarea class="forum-input" id="forumTA" placeholder="Add a comment or question…" rows="1" oninput="autoR(this)"></textarea>
+      <button class="btn btn-primary btn-sm" onclick="postComment()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEOS ══ -->
+<div class="page" id="page-videos">
+  <div class="ph"><div><h1 class="ptitle">🎬 Video Links</h1><p class="psub">Educational videos shared by teachers</p></div><button class="btn btn-primary btn-sm" id="addVideoBtn" onclick="openLinkModal()">+ Add Video</button></div>
+  <div class="cg3" id="videoGrid"></div>
+</div>
+
+<!-- ══ NEWS ══ -->
+<div class="page" id="page-news">
+  <div class="ph">
+    <div><h1 class="ptitle">📰 News of the Day</h1><p class="psub">Stay informed with education news</p></div>
+    <button class="btn btn-primary btn-sm" id="addNewsBtn" onclick="openNewsModal()">+ Post News</button>
+  </div>
+  <div id="newsList" style="display:flex;flex-direction:column;gap:12px"></div>
+</div>
+
+<!-- ══ INVENTORS ══ -->
+<div class="page" id="page-inventors">
+  <div style="background:linear-gradient(135deg,#0F2E8A 0%,#312E81 50%,#1B4FD8 100%);border-radius:var(--rl);padding:30px;color:#fff;margin-bottom:22px;text-align:center">
+    <div style="font-size:42px;margin-bottom:10px">🔬⚙️🤖</div>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:8px">The Inventors Hall</h1>
+    <p style="opacity:.8;font-size:13px;max-width:500px;margin:0 auto;line-height:1.7">Celebrating brilliant student minds from our Coding & Robotics Club who dared to build something new.</p>
+  </div>
+  <div class="ph">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600">🏆 Student Inventors</h2>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary btn-sm" id="addInvBtn" onclick="openAddInvModal()">+ Add Inventor</button>
+      <button class="btn btn-ghost btn-sm" id="manageInvBtn" onclick="openManageInvModal()" style="display:none">⚙ Manage</button>
+    </div>
+  </div>
+  <div class="cg3" id="invGrid"></div>
+</div>
+
+<!-- ══ REWARDS ══ -->
+<div class="page" id="page-rewards">
+  <div style="background:linear-gradient(135deg,#0F2E8A 0%,#312E81 50%,#1B4FD8 100%);border-radius:var(--rl);padding:30px;color:#fff;margin-bottom:22px;text-align:center">
+    <div style="font-size:42px;margin-bottom:10px">💎</div>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:8px" id="rewardsGemTotal">0 Gems</h1>
+    <p style="opacity:.8;font-size:13px;max-width:500px;margin:0 auto;line-height:1.7">Earn 1 gem for every quiz you play, and 2 gems for every article or news post you read.</p>
+  </div>
+  <div class="cg3" style="margin-bottom:22px;grid-template-columns:repeat(4,1fr)">
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">🔥</div><div class="stat-val" style="color:var(--rd)" id="rewardsStreakCount">1</div><div class="stat-lbl">Day Streak</div></div>
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">✏️</div><div class="stat-val" style="color:var(--pr)" id="rewardsQuizCount">0</div><div class="stat-lbl">Quizzes Played (+1 💎 each)</div></div>
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">📄</div><div class="stat-val" style="color:var(--gr)" id="rewardsArticleCount">0</div><div class="stat-lbl">Articles &amp; News Read (+2 💎 each)</div></div>
+    <div class="stat-card"><div style="font-size:20px;margin-bottom:8px">💎</div><div class="stat-val" style="color:var(--pu)" id="rewardsGemTotal2">0</div><div class="stat-lbl">Total Gems</div></div>
+  </div>
+  <div class="card mb2">
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:12px">🏅 Milestones</h3>
+    <div id="rewardsMilestones" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+  <div class="card" id="rewards100Card">
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:6px">🏆 100-Gem Perks</h3>
+    <p class="ts tm" style="margin-bottom:14px">Reach 100 gems to unlock: a full month of free AI Tutor access, the ability to submit your own article for us to publish, and a spot with your photo on the home page!</p>
+    <div id="rewards100Body"></div>
+  </div>
+</div>
+
+<!-- Submit Article Modal (100+ gems) -->
+<div class="modal-ov" id="submitArticleModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">📝 Submit Your Article</span><button class="mc" onclick="closeM('submitArticleModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="artTitle" placeholder="Article title"></div>
+    <div class="form-group"><label class="form-label">Your Article</label><textarea class="form-input" id="artBody" rows="6" placeholder="Write your article here…"></textarea></div>
+    <p class="ts tm" style="margin-bottom:10px">Your article will be reviewed by Admin before it's posted to News.</p>
+    <button class="btn btn-primary wf" onclick="submitArticle()">Submit for Review</button>
+  </div>
+</div>
+
+<!-- Add Photo Modal (100+ gems, for the home page contributor wall) -->
+<div class="modal-ov" id="addPhotoModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">📸 Add Your Photo</span><button class="mc" onclick="closeM('addPhotoModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Upload a photo</label>
+      <label class="upload-zone" for="gemPhotoInput" style="padding:18px">
+        <input type="file" id="gemPhotoInput" accept="image/*" onchange="onFileSelect(this,'gemPhotoName')">
+        <p style="font-size:13px">📷 <span id="gemPhotoName">Tap to upload photo (JPG/PNG)</span></p>
+      </label>
+    </div>
+    <button class="btn btn-primary wf" onclick="submitGemPhoto()">Save Photo</button>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
+<div class="page" id="page-admin">
+  <div class="ph"><div><h1 class="ptitle">🛡 Admin Panel</h1><p class="psub">Manage all platform content</p></div></div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('admin','posts',this)">Manage Posts</div>
+    <div class="tab" onclick="switchTab('admin','users',this)">Users</div>
+    <div class="tab" onclick="switchTab('admin','reports',this)">Reports</div>
+    <div class="tab" onclick="switchTab('admin','articles',this)">Article Submissions</div>
+  </div>
+  <div class="tab-panel active" id="admin-posts">
+    <div class="card mb2">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:12px">📰 News Posts <span class="admin-badge">Admin</span></h3>
+      <button class="btn btn-primary btn-sm mb2" onclick="openNewsModal()">+ Create Post</button>
+      <div id="adminNewsList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="card mb2">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:12px">📚 Uploaded Notes <span class="admin-badge">Admin</span></h3>
+      <div id="adminNotesList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:12px">🔬 Inventors <span class="admin-badge">Admin</span></h3>
+      <div id="adminInvList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="admin-users">
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:14px">Registered Users</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="border-bottom:1px solid var(--br)"><th style="text-align:left;padding:8px;font-weight:600">Name</th><th style="text-align:left;padding:8px;font-weight:600">Role</th><th style="text-align:left;padding:8px;font-weight:600">Email</th><th style="text-align:left;padding:8px;font-weight:600">Status</th></tr></thead>
+        <tbody id="adminUsersTable"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-panel" id="admin-reports">
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:14px">Submitted Reports</h3>
+      <div id="adminReportsList"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="admin-articles">
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:14px">📝 Article Submissions <span class="admin-badge">Admin</span></h3>
+      <p class="ts tm" style="margin-bottom:12px">Articles submitted by students/teachers who reached 100 gems.</p>
+      <div id="adminArticlesList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REPORT ══ -->
+<div class="page" id="page-report">
+  <div class="ph"><div><h1 class="ptitle">🚩 Report & Feedback</h1></div></div>
+  <div class="cg2">
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:14px">Submit a Report</h3>
+      <div class="form-group"><label class="form-label">Report type</label><select class="form-input form-select" id="rpType"><option>Technical Issue</option><option>Inappropriate Content</option><option>Incorrect Information</option><option>Other</option></select></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="rpDesc" rows="4" placeholder="Describe the issue…"></textarea></div>
+      <button class="btn btn-danger wf" onclick="submitUserReport()">Submit Report</button>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;margin-bottom:14px">💡 Give Feedback</h3>
+      <div class="form-group"><label class="form-label">Rate your experience today</label>
+        <div style="display:flex;gap:10px;font-size:26px;margin:8px 0">
+          <span style="cursor:pointer" onclick="showToast('Thanks! 😊')">😟</span><span style="cursor:pointer" onclick="showToast('Thanks! 😊')">😐</span><span style="cursor:pointer" onclick="showToast('Thanks! 😊')">🙂</span><span style="cursor:pointer" onclick="showToast('Thanks! 😊')">😊</span><span style="cursor:pointer" onclick="showToast('Thanks! 😊')">🤩</span>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">What can we improve?</label><textarea class="form-input" rows="4" placeholder="Your suggestion…"></textarea></div>
+      <button class="btn btn-green wf" onclick="showToast('Feedback received! Thank you 🙌')">Send Feedback</button>
+    </div>
+  </div>
+</div>
+
+</main>
+</div><!-- end appWrap -->
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- Upload Note Modal -->
+<div class="modal-ov" id="uploadModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">📚 Upload Class Note</span><button class="mc" onclick="closeM('uploadModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="uTitle" placeholder="e.g. Mathematics — Chapter 5"></div>
+    <div class="form-group"><label class="form-label">Subject</label>
+      <select class="form-input form-select subject-select" id="uSubject"></select>
+    </div>
+    <div class="form-group"><label class="form-label">Class Level</label>
+      <select class="form-input form-select" id="uClass"><option>JSS 1</option><option>JSS 2</option><option>JSS 3</option><option>SSS 1</option><option>SSS 2</option><option>SSS 3</option></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Upload File (PDF, DOCX, PPTX)</label>
+      <label class="upload-zone" for="noteFileInput">
+        <input type="file" id="noteFileInput" accept=".pdf,.doc,.docx,.ppt,.pptx" onchange="onFileSelect(this,'noteFileName')">
+        <div class="uz-icon">📁</div>
+        <h3>Tap to choose file</h3>
+        <p id="noteFileName">PDF, DOCX, PPTX — max 50 MB — works on phone & PC</p>
+      </label>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:16px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('uploadModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitNote()">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- Note Viewer Modal -->
+<div class="modal-ov" id="viewNoteModal">
+  <div class="modal" style="max-width:820px;width:94vw">
+    <div class="mh"><span class="mt" id="viewNoteTitle">📄 Note</span><button class="mc" onclick="closeM('viewNoteModal')">✕</button></div>
+    <div id="viewNoteBody" style="min-height:60vh;max-height:75vh;overflow:auto;border:1px solid var(--br);border-radius:var(--r);background:#F9FAFB"></div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('viewNoteModal')">Close</button>
+      <a id="viewNoteDownload" class="btn btn-primary" style="flex:1;text-align:center" href="#" download>⬇ Download</a>
+    </div>
+  </div>
+</div>
+
+<!-- E-Note Modal -->
+<div class="modal-ov" id="enoteModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">📄 Create E-Note</span><button class="mc" onclick="closeM('enoteModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="enTitle" placeholder="e.g. Introduction to Calculus"></div>
+    <div class="form-group"><label class="form-label">Subject</label><select class="form-input form-select subject-select" id="enSubject"></select></div>
+    <div class="form-group"><label class="form-label">Class Level</label><select class="form-input form-select" id="enClass"><option>JSS 1</option><option>JSS 2</option><option>JSS 3</option><option>SSS 1</option><option>SSS 2</option><option>SSS 3</option></select></div>
+    <div class="form-group"><label class="form-label">Content</label><textarea class="form-input" id="enContent" rows="5" placeholder="Write your e-note content here…"></textarea></div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('enoteModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitEnote()">Publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Inventor Modal -->
+<div class="modal-ov" id="addInvModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">🔬 Add Inventor</span><button class="mc" onclick="closeM('addInvModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="iName" placeholder="e.g. Adaeze Nwosu"></div>
+    <div class="form-group"><label class="form-label">Class / Level</label><input class="form-input" id="iClass" placeholder="e.g. SSS 2"></div>
+    <div class="form-group"><label class="form-label">Invention / Project Title *</label><input class="form-input" id="iProject" placeholder="e.g. Smart Traffic Light Controller"></div>
+    <div class="form-group"><label class="form-label">Skills / Tags (comma-separated)</label><input class="form-input" id="iTags" placeholder="e.g. Python, Robotics, AI"></div>
+    <div class="form-group">
+      <label class="form-label">Student Photo (optional)</label>
+      <label class="upload-zone" for="invPhotoInput" style="padding:18px">
+        <input type="file" id="invPhotoInput" accept="image/*" onchange="onFileSelect(this,'invPhotoName')">
+        <p style="font-size:13px">📷 <span id="invPhotoName">Tap to upload photo (JPG/PNG)</span></p>
+      </label>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('addInvModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitInventor()">Add to Hall</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Inventors Modal -->
+<div class="modal-ov" id="manageInvModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">⚙ Manage Inventors</span><button class="mc" onclick="closeM('manageInvModal')">✕</button></div>
+    <div id="manageInvList" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</div>
+
+<!-- Inventor Detail Modal -->
+<div class="modal-ov" id="invDetailModal">
+  <div class="modal"><div class="mh"><span class="mt">Inventor Profile</span><button class="mc" onclick="closeM('invDetailModal')">✕</button></div><div id="invDetailContent" style="text-align:center"></div></div>
+</div>
+
+<!-- News Modal -->
+<div class="modal-ov" id="newsModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">📰 Create News Post</span><button class="mc" onclick="closeM('newsModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Headline *</label><input class="form-input" id="nTitle" placeholder="Enter news headline"></div>
+    <div class="form-group"><label class="form-label">Category</label><select class="form-input form-select" id="nCat"><option>News</option><option>Technology</option><option>Education Policy</option><option>Science</option><option>Article</option></select></div>
+    <div class="form-group"><label class="form-label">Summary</label><textarea class="form-input" id="nBody" rows="4" placeholder="Brief description of the news…"></textarea></div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('newsModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitNews()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Video Link Modal -->
+<div class="modal-ov" id="linkModal">
+  <div class="modal">
+    <div class="mh"><span class="mt">🎬 Add Video Link</span><button class="mc" onclick="closeM('linkModal')">✕</button></div>
+    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="vTitle" placeholder="e.g. Khan Academy — Algebra"></div>
+    <div class="form-group"><label class="form-label">URL</label><input class="form-input" type="url" id="vUrl" placeholder="https://youtube.com/..."></div>
+    <div class="form-group"><label class="form-label">Subject</label><select class="form-input form-select subject-select" id="vSubject"></select></div>
+    <div class="form-group"><label class="form-label">Class Level</label><select class="form-input form-select" id="vClass"><option>JSS 1</option><option>JSS 2</option><option>JSS 3</option><option>SSS 1</option><option>SSS 2</option><option>SSS 3</option></select></div>
+    <div class="form-group"><label class="form-label">Duration</label><input class="form-input" id="vDur" placeholder="e.g. 12 min"></div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('linkModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitVideo()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create Quiz Modal -->
+<div class="modal-ov" id="createQuizModal">
+  <div class="modal" style="max-width:640px">
+    <div class="mh"><span class="mt">✏️ Create Quiz</span><button class="mc" onclick="closeM('createQuizModal')">✕</button></div>
+    <div class="cg2" style="margin-bottom:6px">
+      <div class="form-group"><label class="form-label">Quiz Title *</label><input class="form-input" id="qzTitle" placeholder="e.g. Chemistry — Periodic Table"></div>
+      <div class="form-group"><label class="form-label">Subject</label><select class="form-input form-select subject-select" id="qzSubject"></select></div>
+    </div>
+    <div class="cg2" style="margin-bottom:6px">
+      <div class="form-group"><label class="form-label">Class Level</label><select class="form-input form-select" id="qzClass"><option>JSS 1</option><option>JSS 2</option><option>JSS 3</option><option>SSS 1</option><option>SSS 2</option><option>SSS 3</option></select></div>
+      <div class="form-group"><label class="form-label">Time Limit (minutes)</label><input class="form-input" id="qzTime" type="number" min="1" max="60" value="10"></div>
+    </div>
+    <hr class="divider">
+    <div class="form-group" style="display:flex;align-items:center;gap:10px">
+      <input type="checkbox" id="qzPublic" checked style="width:16px;height:16px">
+      <label for="qzPublic" style="font-size:13px;font-weight:500">Make this quiz public (visible to everyone). Uncheck to keep it just for yourself.</label>
+    </div>
+    <hr class="divider">
+    <div id="qzQuestionsWrap"></div>
+    <button class="btn btn-outline btn-sm mb2" onclick="addQuizQuestionRow()">+ Add Question</button>
+    <div style="display:flex;gap:9px;margin-top:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('createQuizModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitQuizCreate()">Publish Quiz</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Supabase client (sb) is already initialized in <head> with your real project URL and anon key.
+
+function timeAgo(iso) {
+  if (!iso) return 'Recently';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff/60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins/60);
+  if (hrs < 24) return `${hrs} hr${hrs>1?'s':''} ago`;
+  const days = Math.floor(hrs/24);
+  if (days < 2) return 'Yesterday';
+  if (days < 7) return `${days} days ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
+// ═══ ASK AI TUTOR — SERVER CONFIG ═══
+// This app has no built-in server, so the AI Tutor needs your own backend to hold
+// your Anthropic API key safely. Deploy the included ai-proxy-worker.js (see the
+// instructions inside that file) and paste its URL below, e.g.:
+//   const AI_PROXY_URL = "https://edubond-ai-proxy.yourname.workers.dev";
+// Leave it blank to keep the AI Tutor in "preview only" mode (works when viewed
+// inside Claude.ai, shows a setup message when opened as a standalone file).
+const AI_PROXY_URL = "";
+
+// ═══ STATE ═══
+let currentUser = null; // {id, email, name, role, init, color, photo}
+let currentProfile = null; // live mirror of this user's row in Supabase `profiles` (gems, streak, ai fields, etc.)
+// noteFiles is now a cache populated from Supabase (see NOTES section below)
+let inventors = []; // local cache of rows fetched from Supabase `inventors` table
+let forumPosts = []; // local cache of rows fetched from Supabase `forum_posts` table
+const FIXED_NEWS = [
+  {id:'fixed1', title:'2025/26 First Term Exam Timetable Released',cat:'Announcement',body:'Exams run from Thursday 27th November to Monday 8th December, covering CBT and theory papers across JSS1–SSS3. Download the full timetable for exact dates and subjects per class.',by:'Admin',time:'Just now',fileUrl:'./first_term_exam_timetable_2025-26.docx',fileName:'First_Term_Exam_Timetable_2025-26.docx'},
+];
+let newsPosts = []; // local cache of rows fetched from Supabase `news_posts` table
+let pendingArticles = []; // articles submitted by 100+ gem users, awaiting Admin review
+let nextArticleId = 1;
+const FIXED_ENOTES = [
+  {id:'enote_fixed1', title:'Introduction to Calculus',subject:'Mathematics',cls:'SSS 3',by:'Mrs. Okonkwo',content:'Differential calculus, limits, and rates of change explained with worked examples.',color:'var(--pr)'},
+  {id:'enote_fixed2', title:'Photosynthesis Deep Dive',subject:'Biology',cls:'SSS 2',by:'Mr. Bello',content:'Light reactions, Calvin cycle, and the role of chlorophyll.',color:'var(--gr)'},
+];
+let enotes = []; // local cache of rows fetched from Supabase `enotes` table
+let currentFilter = 'all';
+let selectedNoteFile = null;
+let selectedInvPhoto = null;
+let selectedGemPhoto = null;
+
+// ═══ SUBJECTS (shared everywhere: notes, e-notes, videos, quizzes) ═══
+const SUBJECTS = ['Mathematics','English Language','Physics','Chemistry','Biology','Coding','History',
+  'Government','Economics','Literature in English','Geography','Agricultural Science','Civic Education',
+  'French','CRS/IRS','Further Mathematics','Technical Drawing','Financial Accounting','Computer Studies',
+  'Basic Science','Digital Technologies','Computer Hardware & GSM Repairs'];
+
+function populateSubjectSelects() {
+  document.querySelectorAll('.subject-select').forEach(sel => {
+    const cur = sel.value;
+    sel.innerHTML = SUBJECTS.map(s => `<option>${s}</option>`).join('');
+    if (SUBJECTS.includes(cur)) sel.value = cur;
+  });
+}
+function renderNotesChips() {
+  const el = document.getElementById('notesChips');
+  el.innerHTML = `<div class="chip active" onclick="filterChip(this,'notesChips','all')">All</div>` +
+    SUBJECTS.map(s => `<div class="chip" onclick="filterChip(this,'notesChips','${s}')">${s}</div>`).join('');
+}
+
+// ═══ VIDEO LINKS ═══
+let videoLinks = [
+  // Empty by default — real videos appear here once teachers/admins add real links.
+];
+
+// ═══ QUIZZES (data-driven, shared across roles) ═══
+const FIXED_QUIZZES = [
+  {subject:'Physics', title:'Physics — Wave Motion', teacher:'Mrs. Fashola', cls:'SSS 2', timeLimit:300,
+    questions:[
+      {q:"A wave travels at 340 m/s with a frequency of 85 Hz. What is the wavelength?", opts:["4 metres","2.5 metres","0.25 metres","40 metres"], correct:0, explain:"Wavelength = speed ÷ frequency = 340 ÷ 85 = 4 metres."},
+      {q:"What type of wave is sound?", opts:["Transverse","Longitudinal","Electromagnetic","Standing"], correct:1, explain:"Sound waves are longitudinal — particles vibrate parallel to the direction the wave travels."},
+      {q:"Which property of a wave determines its pitch?", opts:["Amplitude","Wavelength","Frequency","Speed"], correct:2, explain:"Frequency determines pitch — a higher frequency means a higher pitch."},
+      {q:"The distance between two successive crests is called the:", opts:["Amplitude","Period","Wavelength","Frequency"], correct:2, explain:"The wavelength is the distance between two successive crests (or troughs)."},
+      {q:"Wave speed can be calculated using:", opts:["v = f/λ","v = f × λ","v = λ/f","v = f + λ"], correct:1, explain:"Wave speed = frequency × wavelength, written v = fλ."}
+    ]},
+  {subject:'Mathematics', title:'Mathematics — Whole Numbers & Place Value', teacher:'Mr. Adeyemi', cls:'JSS 1', timeLimit:300,
+    questions:[
+      {q:"What is the place value of 7 in 3,750?", opts:["7","70","700","7000"], correct:1, explain:"7 is in the tens place, so its place value is 70."},
+      {q:"Which of these numbers is a prime number?", opts:["4","6","9","11"], correct:3, explain:"11 has only two factors, 1 and itself, making it a prime number."},
+      {q:"What is 456 rounded to the nearest hundred?", opts:["400","450","500","460"], correct:2, explain:"456 is closer to 500 than 400 when rounding to the nearest hundred."},
+      {q:"Which symbol means 'greater than'?", opts:["<","=",">","≠"], correct:2, explain:"The symbol '>' means greater than."},
+      {q:"What is the sum of 245 and 178?", opts:["423","413","433","403"], correct:0, explain:"245 + 178 = 423."}
+    ]},
+  {subject:'Mathematics', title:'Mathematics — Quadratic Equations', teacher:'Mrs. Balogun', cls:'SSS 2', timeLimit:300,
+    questions:[
+      {q:"What is the standard form of a quadratic equation?", opts:["ax + b = 0","ax² + bx + c = 0","ax³ + bx² = 0","a/x + b = 0"], correct:1, explain:"A quadratic equation is written as ax² + bx + c = 0, where a ≠ 0."},
+      {q:"Solve for x: x² − 9 = 0", opts:["x = 3 only","x = −3 only","x = ±3","x = 9"], correct:2, explain:"x² = 9, so x = 3 or x = −3, written as x = ±3."},
+      {q:"What is the discriminant of ax² + bx + c = 0?", opts:["b² − 4ac","b² + 4ac","4ac − b²","a² − 4bc"], correct:0, explain:"The discriminant, used to determine the nature of roots, is b² − 4ac."},
+      {q:"If the discriminant is negative, the roots are:", opts:["Real and equal","Real and different","Not real (complex)","Zero"], correct:2, explain:"A negative discriminant means the equation has no real roots — the roots are complex."},
+      {q:"Factorise: x² + 5x + 6", opts:["(x+2)(x+3)","(x+1)(x+6)","(x−2)(x−3)","(x+6)(x−1)"], correct:0, explain:"(x+2)(x+3) expands to x² + 5x + 6."}
+    ]},
+  {subject:'English Language', title:'English — Parts of Speech', teacher:'Mrs. Nwosu', cls:'JSS 2', timeLimit:300,
+    questions:[
+      {q:"Which word is a noun in this sentence: 'The dog barked loudly'?", opts:["The","dog","barked","loudly"], correct:1, explain:"'Dog' is a naming word — a noun."},
+      {q:"Identify the verb: 'She sings beautifully.'", opts:["She","sings","beautifully","(none)"], correct:1, explain:"'Sings' is the action word — a verb."},
+      {q:"Which of these is an adjective?", opts:["quickly","beautiful","run","and"], correct:1, explain:"'Beautiful' describes a noun, making it an adjective."},
+      {q:"What part of speech is the word 'and'?", opts:["Preposition","Conjunction","Adverb","Pronoun"], correct:1, explain:"'And' joins words or clauses together, making it a conjunction."},
+      {q:"Which word is a pronoun in: 'He gave it to her.'?", opts:["gave","He","to","(none)"], correct:1, explain:"'He' replaces a noun (a person's name), making it a pronoun."}
+    ]},
+  {subject:'English Language', title:'English — Comprehension & Figures of Speech', teacher:'Mr. Chukwu', cls:'SSS 1', timeLimit:300,
+    questions:[
+      {q:"'The classroom was a zoo' is an example of:", opts:["Simile","Metaphor","Personification","Hyperbole"], correct:1, explain:"A metaphor directly compares two things without using 'like' or 'as' — calling the classroom 'a zoo'."},
+      {q:"'As brave as a lion' is an example of:", opts:["Metaphor","Simile","Irony","Alliteration"], correct:1, explain:"A simile compares two things using 'like' or 'as'."},
+      {q:"Giving human qualities to non-human things is called:", opts:["Personification","Onomatopoeia","Metaphor","Assonance"], correct:0, explain:"Personification gives human characteristics to non-human things, e.g. 'the wind whispered'."},
+      {q:"'I've told you a million times' is an example of:", opts:["Understatement","Hyperbole","Simile","Irony"], correct:1, explain:"Hyperbole is an exaggerated statement not meant to be taken literally."},
+      {q:"The repetition of initial consonant sounds is called:", opts:["Rhyme","Alliteration","Assonance","Onomatopoeia"], correct:1, explain:"Alliteration is the repetition of the same consonant sound at the beginning of words, e.g. 'Peter Piper picked'."}
+    ]},
+  {subject:'Chemistry', title:'Chemistry — Atomic Structure', teacher:'Mr. Eze', cls:'SSS 1', timeLimit:300,
+    questions:[
+      {q:"What is the charge of a proton?", opts:["Negative","Positive","Neutral","Variable"], correct:1, explain:"Protons carry a positive charge."},
+      {q:"Where are electrons found in an atom?", opts:["In the nucleus","Orbiting the nucleus","Attached to protons","In the neutron"], correct:1, explain:"Electrons move around the nucleus in energy levels (shells)."},
+      {q:"The atomic number of an element represents its number of:", opts:["Neutrons","Protons","Electrons only","Protons and neutrons combined"], correct:1, explain:"The atomic number equals the number of protons in the nucleus."},
+      {q:"Which particle has no electric charge?", opts:["Proton","Electron","Neutron","Ion"], correct:2, explain:"Neutrons are neutral, carrying no electric charge."},
+      {q:"Isotopes of an element differ in their number of:", opts:["Protons","Electrons","Neutrons","Atomic number"], correct:2, explain:"Isotopes have the same number of protons but different numbers of neutrons."}
+    ]},
+  {subject:'Biology', title:'Biology — Cell Structure', teacher:'Mrs. Adamu', cls:'SSS 1', timeLimit:300,
+    questions:[
+      {q:"Which organelle is known as the 'powerhouse of the cell'?", opts:["Nucleus","Mitochondria","Ribosome","Golgi apparatus"], correct:1, explain:"Mitochondria produce energy (ATP) for the cell, earning the nickname 'powerhouse'."},
+      {q:"Which structure controls what enters and leaves the cell?", opts:["Cell wall","Cell membrane","Nucleus","Cytoplasm"], correct:1, explain:"The cell membrane is selectively permeable, controlling movement of substances."},
+      {q:"Which of these is found in plant cells but not animal cells?", opts:["Mitochondria","Nucleus","Cell wall","Ribosome"], correct:2, explain:"Plant cells have a rigid cell wall made of cellulose, which animal cells lack."},
+      {q:"Where is genetic material (DNA) stored in a eukaryotic cell?", opts:["Cytoplasm","Nucleus","Ribosome","Cell membrane"], correct:1, explain:"The nucleus houses the cell's DNA."},
+      {q:"What is the function of chloroplasts?", opts:["Respiration","Photosynthesis","Protein synthesis","Waste removal"], correct:1, explain:"Chloroplasts contain chlorophyll and carry out photosynthesis in plant cells."}
+    ]},
+  {subject:'Coding', title:'Coding — Intro to Python', teacher:'Mr. Okafor', cls:'JSS 3', timeLimit:300,
+    questions:[
+      {q:"Which symbol is used to write comments in Python?", opts:["//","#","<!--","**"], correct:1, explain:"In Python, the # symbol marks the start of a comment."},
+      {q:"What will print(2 + 3) output?", opts:["23","5","2+3","Error"], correct:1, explain:"Python evaluates the expression 2 + 3 to give 5."},
+      {q:"Which of these is a valid Python variable name?", opts:["2name","name_2","name-2","name 2"], correct:1, explain:"Variable names can contain letters, numbers, and underscores, but can't start with a number or contain spaces/hyphens."},
+      {q:"Which keyword is used to define a function in Python?", opts:["func","function","def","define"], correct:2, explain:"Python uses the 'def' keyword to define a function."},
+      {q:"What data type is the value True in Python?", opts:["String","Integer","Boolean","Float"], correct:2, explain:"True and False are Boolean values in Python."}
+    ]},
+  {subject:'Government', title:'Government — Forms of Government', teacher:'Mrs. Ibrahim', cls:'SSS 2', timeLimit:300,
+    questions:[
+      {q:"A system of government where power is concentrated in one person is called:", opts:["Democracy","Autocracy","Oligarchy","Federalism"], correct:1, explain:"Autocracy is a system where one person holds absolute power."},
+      {q:"Nigeria practices which system of government?", opts:["Unitary","Federal","Confederal","Autocratic"], correct:1, explain:"Nigeria operates a federal system, with powers shared between the central and state governments."},
+      {q:"Government by the people, for the people, is called:", opts:["Monarchy","Democracy","Theocracy","Aristocracy"], correct:1, explain:"Democracy means government of, by, and for the people."},
+      {q:"A government ruled by a small, privileged group is called:", opts:["Oligarchy","Democracy","Anarchy","Monarchy"], correct:0, explain:"Oligarchy is rule by a small group of people."},
+      {q:"The separation of powers divides government into how many arms?", opts:["Two","Three","Four","Five"], correct:1, explain:"Government is typically divided into three arms: Executive, Legislature, and Judiciary."}
+    ]},
+  {subject:'Economics', title:'Economics — Basic Economic Concepts', teacher:'Mr. Yusuf', cls:'SSS 1', timeLimit:300,
+    questions:[
+      {q:"Economics is primarily the study of:", opts:["Government","Scarcity and choice","History","Language"], correct:1, explain:"Economics studies how people and societies deal with scarcity by making choices."},
+      {q:"The basic economic problem is:", opts:["Inflation","Scarcity","Taxation","Unemployment"], correct:1, explain:"Scarcity — limited resources vs unlimited wants — is the fundamental economic problem."},
+      {q:"What is 'opportunity cost'?", opts:["The price of a good","The next best alternative given up","Total cost of production","Tax paid on income"], correct:1, explain:"Opportunity cost is the value of the next best alternative sacrificed when a choice is made."},
+      {q:"Which of these is a factor of production?", opts:["Advertising","Labour","Profit","Demand"], correct:1, explain:"Labour, land, capital, and entrepreneurship are the four factors of production."},
+      {q:"A rise in the general price level is called:", opts:["Deflation","Inflation","Recession","Depreciation"], correct:1, explain:"Inflation is a sustained increase in the general price level of goods and services."}
+    ]},
+  {subject:'Geography', title:'Geography — Map Reading & Weather', teacher:'Mrs. Danjuma', cls:'JSS 2', timeLimit:300,
+    questions:[
+      {q:"What instrument is used to measure rainfall?", opts:["Thermometer","Rain gauge","Barometer","Anemometer"], correct:1, explain:"A rain gauge measures the amount of rainfall in an area."},
+      {q:"Which instrument measures wind speed?", opts:["Anemometer","Thermometer","Hygrometer","Rain gauge"], correct:0, explain:"An anemometer is used to measure wind speed."},
+      {q:"On a map, contour lines that are close together indicate:", opts:["Flat land","Steep slope","Water body","Forest"], correct:1, explain:"Closely spaced contour lines indicate a steep slope."},
+      {q:"The four cardinal points on a compass are:", opts:["Up, Down, Left, Right","North, South, East, West","Hot, Cold, Wet, Dry","High, Low, Near, Far"], correct:1, explain:"The four cardinal points are North, South, East, and West."},
+      {q:"What does a map key/legend show?", opts:["The map's title","The scale only","The meaning of symbols used","The direction of north"], correct:2, explain:"A map key (or legend) explains what the symbols on a map represent."}
+    ]},
+  {subject:'Agricultural Science', title:'Agricultural Science — Farm Tools & Equipment', teacher:'Mr. Bello', cls:'JSS 1', timeLimit:300,
+    questions:[
+      {q:"Which tool is used for digging holes to plant crops?", opts:["Hoe","Cutlass","Wheelbarrow","Rake"], correct:0, explain:"A hoe is commonly used for digging and turning soil."},
+      {q:"Which tool is used to cut grass and clear bush?", opts:["Cutlass","Rake","Spade","Sickle"], correct:0, explain:"A cutlass (machete) is used for clearing bush and cutting grass."},
+      {q:"What is a wheelbarrow used for on a farm?", opts:["Watering plants","Transporting farm produce or soil","Cutting weeds","Measuring land"], correct:1, explain:"A wheelbarrow is used to transport materials like harvested crops, soil, or manure."},
+      {q:"Which tool is best for gathering fallen leaves or dried grass?", opts:["Rake","Hoe","Axe","Cutlass"], correct:0, explain:"A rake is used to gather leaves, grass, or debris."},
+      {q:"Which of these is a safety practice when using farm tools?", opts:["Leaving tools on the ground after use","Wearing protective gloves","Running while carrying tools","Sharing tools without cleaning"], correct:1, explain:"Wearing protective gloves helps prevent injury when handling farm tools."}
+    ]},
+  {subject:'French', title:'French — Greetings & Numbers', teacher:'Mme. Chidozie', cls:'JSS 1', timeLimit:300,
+    questions:[
+      {q:"How do you say 'Hello' in French?", opts:["Au revoir","Bonjour","Merci","S'il vous plaît"], correct:1, explain:"'Bonjour' means 'Hello' or 'Good day' in French."},
+      {q:"What does 'Merci' mean?", opts:["Please","Sorry","Thank you","Goodbye"], correct:2, explain:"'Merci' means 'Thank you'."},
+      {q:"How do you say the number 'three' in French?", opts:["Un","Deux","Trois","Quatre"], correct:2, explain:"'Trois' is French for 'three'."},
+      {q:"What does 'Au revoir' mean?", opts:["Hello","Goodbye","Please","Yes"], correct:1, explain:"'Au revoir' means 'Goodbye'."},
+      {q:"How do you say 'my name is' in French?", opts:["Comment allez-vous","Je m'appelle","Où habites-tu","Quel âge as-tu"], correct:1, explain:"'Je m'appelle' means 'My name is' in French."}
+    ]},
+  {subject:'Civic Education', title:'Civic Education — Rights and Responsibilities', teacher:'Mrs. Okonkwo', cls:'JSS 3', timeLimit:300,
+    questions:[
+      {q:"The right to life, freedom of speech, and education are examples of:", opts:["Privileges","Human rights","Laws","Punishments"], correct:1, explain:"These are fundamental human rights guaranteed to every individual."},
+      {q:"One responsibility of every citizen is to:", opts:["Avoid paying taxes","Obey the laws of the land","Ignore community issues","Break traffic rules"], correct:1, explain:"Obeying the laws of the land is a key responsibility of every citizen."},
+      {q:"Which of these is a civic duty?", opts:["Voting during elections","Littering the environment","Avoiding jury duty","Refusing to pay taxes"], correct:0, explain:"Voting is an important civic duty that allows citizens to participate in governance."},
+      {q:"The right to express one's opinion freely is called:", opts:["Freedom of movement","Freedom of speech","Right to education","Right to fair hearing"], correct:1, explain:"Freedom of speech allows individuals to express their opinions and ideas."},
+      {q:"Respecting the rights of others is an example of:", opts:["Civic responsibility","Discrimination","Corruption","Nepotism"], correct:0, explain:"Respecting others' rights is an important civic responsibility that promotes peaceful coexistence."}
+    ]}
+];
+let dynamicQuizzes = []; // local cache of rows fetched from Supabase `quizzes` table
+let quizzes = [...FIXED_QUIZZES]; // combined list used for rendering/taking quizzes
+let currentQuiz = null, currentQIndex = 0, quizAnswers = [], quizChecked = [];
+let quizTimerInterval = null, quizTimeLeft = 0;
+let quizResults = [];
+
+// ═══ ADMIN REPORTS (shared, fed by comment moderation + user reports) ═══
+let reports = []; // local cache of rows fetched from Supabase `reports` table
+
+// ═══ ASK AI ═══
+let aiHistory = []; // {role, content}
+
+// ═══ DAILY STREAK (session-based) ═══
+let streakCount = 1;
+let gemCount = 0;
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+// ═══ SIMPLE COMMENT MODERATION ═══
+const BAD_WORDS = ['idiot','stupid','shut up','dumb','fool','trash','useless','loser','hate you','damn','crap','ugly'];
+function censorCheck(text) {
+  let clean = text, hits = 0;
+  BAD_WORDS.forEach(w => {
+    const pattern = w.split(' ').map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('[\\s-]+');
+    const re = new RegExp('\\b' + pattern + '\\b', 'gi');
+    if (re.test(clean)) { hits++; clean = clean.replace(re, m => '*'.repeat(m.length)); }
+  });
+  return { clean, severe: hits >= 2, hits };
+}
+async function flagReport(by, issue, detail) {
+  const { error } = await sb.from('reports').insert({ issue, by_name: by || 'Unknown', detail: detail || '' });
+  if (error) console.error('flagReport', error);
+  renderReports();
+}
+
+// ═══ AUTH (Supabase) ═══
+// Real accounts now live in Supabase (auth.users + public.profiles), not in browser memory.
+// Admin is a single fixed account created in Supabase — it is NOT one of the sign-up role choices,
+// so nobody can grant themselves Admin access by signing up.
+let signupRole = 'teacher';
+
+function showAuthScreen(which) {
+  document.getElementById('loginScreen').style.display = which === 'login' ? 'flex' : 'none';
+  document.getElementById('signupScreen').style.display = which === 'signup' ? 'flex' : 'none';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('signupError').style.display = 'none';
+}
+
+function selectSignupRole(r, el) {
+  signupRole = r;
+  document.querySelectorAll('#signupScreen .role-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function initialsFor(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '??';
+  if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+
+async function doSignup() {
+  const errEl = document.getElementById('signupError');
+  errEl.style.display = 'none';
+  const name = document.getElementById('suName').value.trim();
+  const email = document.getElementById('suEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('suPass').value;
+  const pass2 = document.getElementById('suPass2').value;
+  const showErr = msg => { errEl.textContent = msg; errEl.style.display = 'block'; };
+  if (!name) return showErr('Please enter your full name.');
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) return showErr('Please enter a valid email address.');
+  if (!pass || pass.length < 6) return showErr('Password must be at least 6 characters.');
+  if (pass !== pass2) return showErr('Passwords do not match.');
+  const role = (signupRole === 'teacher' || signupRole === 'student') ? signupRole : 'student';
+  const colors = ['#1B4FD8','#7C3AED','#059669','#DC2626','#D97706','#0891B2'];
+  const color = colors[Math.floor(Math.random()*colors.length)];
+
+  const { data, error } = await sb.auth.signUp({ email, password: pass });
+  if (error) return showErr(error.message);
+  if (!data.user) return showErr('Something went wrong creating your account. Please try again.');
+
+  if (!data.session) {
+    // No session means Supabase still wants email confirmation before allowing anything else,
+    // even if "Confirm email" looks off in the dashboard — nothing else can happen until that's resolved.
+    showAuthScreen('login');
+    document.getElementById('loginEmail').value = email;
+    showToast('Account created, but Supabase is still requiring email confirmation. Check "Confirm email" is off in Authentication settings, then try again.');
+    return;
+  }
+
+  const { error: profileErr } = await sb.from('profiles').insert({
+    id: data.user.id, email, name, role, init: initialsFor(name), color
+  });
+  if (profileErr) return showErr('Account created but profile setup failed: ' + profileErr.message);
+
+  showToast('Account created! 🎉');
+  await loadProfileAndEnter(data.user.id, email);
+}
+
+async function doLogin() {
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!email || !pass) { errEl.textContent = '❌ Please enter both email and password.'; errEl.style.display = 'block'; return; }
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) { errEl.textContent = '❌ Invalid email or password.'; errEl.style.display = 'block'; return; }
+  await loadProfileAndEnter(data.user.id, email);
+}
+
+// Fetches the profile row and switches the UI into the logged-in app.
+async function loadProfileAndEnter(userId, email) {
+  const { data: profile, error } = await sb.from('profiles').select('*').eq('id', userId).single();
+  if (error || !profile) { showToast('Could not load your profile. Please try signing in again.'); return; }
+  currentUser = { id: profile.id, email, name: profile.name, role: profile.role, init: profile.init, color: profile.color, photo: profile.photo_url };
+  currentProfile = profile;
+  streakCount = profile.streak || 1;
+  gemCount = profile.gems || 0;
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('signupScreen').style.display = 'none';
+  document.getElementById('nav').style.display = 'flex';
+  document.getElementById('appWrap').style.display = 'flex';
+  document.getElementById('navAv').textContent = profile.init;
+  document.getElementById('navAv').style.background = profile.color;
+  document.getElementById('navName').textContent = profile.name;
+  const rb = document.getElementById('navRole');
+  rb.textContent = profile.role;
+  rb.className = 'user-role-badge rb-' + profile.role;
+  document.getElementById('sbAdmin').style.display = profile.role === 'admin' ? 'flex' : 'none';
+  const isTeacher = profile.role === 'teacher' || profile.role === 'admin';
+  const isAdmin = profile.role === 'admin';
+  document.getElementById('uploadNoteBtn').style.display = isTeacher ? '' : 'none';
+  document.getElementById('createEnoteBtn').style.display = isTeacher ? '' : 'none';
+  document.getElementById('addVideoBtn').style.display = isTeacher ? '' : 'none';
+  document.getElementById('createQuizBtn').style.display = '';
+  document.getElementById('addNewsBtn').style.display = isAdmin ? '' : 'none';
+  document.getElementById('addInvBtn').style.display = isTeacher ? '' : 'none';
+  document.getElementById('manageInvBtn').style.display = isAdmin ? '' : 'none';
+  document.getElementById('forumSelfAv').textContent = profile.init;
+  document.getElementById('forumSelfAv').style.background = profile.color;
+
+  await initData();
+  navigate('dashboard');
+  showToast(`Welcome back, ${profile.name}! 👋`);
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  document.getElementById('nav').style.display = 'none';
+  document.getElementById('appWrap').style.display = 'none';
+  document.getElementById('signupScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPass').value = '';
+  showToast('Signed out successfully.');
+}
+
+// On page load, if a session already exists (from a previous visit), log straight back in.
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session && session.user) {
+    await loadProfileAndEnter(session.user.id, session.user.email);
+  }
+})();
+
+// ═══ MOBILE MENU ═══
+function toggleMobileSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('mobileOverlay').classList.toggle('show');
+}
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobileOverlay').classList.remove('show');
+}
+
+// ═══ NAVIGATION ═══
+const PAGES = ['dashboard','notes','enotes','quiz','forum','videos','news','admin','inventors','report','askai','rewards'];
+function navigate(p) {
+  if (p === 'admin' && (!currentUser || currentUser.role !== 'admin')) {
+    showToast('Only Admin can access the Admin Panel.');
+    p = 'dashboard';
+  }
+  PAGES.forEach(id => { const el=document.getElementById('page-'+id); if(el) el.classList.remove('active'); });
+  document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const pg = document.getElementById('page-'+p);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll(`.sb-item[data-page="${p}"]`).forEach(s => s.classList.add('active'));
+  document.querySelectorAll(`.nav-link[data-page="${p}"]`).forEach(l => l.classList.add('active'));
+  closeMobileSidebar();
+  if (p === 'askai') {
+    if (aiHistory.length === 0) {
+      appendAIMsg('assistant', "Hi! I'm your AI tutor 🤖 Ask me anything about Mathematics, Physics, English, or any subject you're studying, and I'll explain it step by step.");
+    }
+    updateAIStatusBanner();
+  }
+}
+
+// ═══ INIT DATA ═══
+async function initData() {
+  populateSubjectSelects(); renderNotesChips();
+  // These fetch their own data from Supabase and populate the shared local caches (noteFiles, inventors, newsPosts, etc.)
+  await Promise.all([
+    renderNotes(), renderForum(), renderInventors(), renderNews(),
+    renderEnotes(), renderVideos(), renderQuizList(), renderQuizResults(), renderReports(),
+    renderAdminArticles(), renderTopContributors()
+  ]);
+  // These just read from the caches populated above, so they must run after.
+  renderDashNotes(); renderDashInv(); renderAdminLists(); await renderAdminUsers();
+  renderRewards();
+  const sbGems = document.getElementById('sbGems');
+  if (sbGems) sbGems.textContent = gemCount;
+  const sbStreak = document.getElementById('sbStreak');
+  if (sbStreak) sbStreak.textContent = '🔥' + streakCount;
+  await updateStats();
+}
+
+// ═══ STATS ═══
+async function updateStats() {
+  document.getElementById('statNotes').textContent = noteFiles.length + 5;
+  document.getElementById('statForum').textContent = forumPosts.length;
+  document.getElementById('sbNotes').textContent = noteFiles.length + 5;
+  document.getElementById('sbForum').textContent = forumPosts.length;
+  const { count } = await sb.from('public_profiles').select('id', {count:'exact', head:true}).eq('role','student');
+  document.getElementById('statStudents').textContent = count || 0;
+  const sbQuiz = document.getElementById('sbQuiz');
+  if (sbQuiz) sbQuiz.textContent = quizzes.length;
+}
+
+// Updates the DB and the local mirror (currentProfile) together, for the logged-in user's own row.
+async function saveProfile(fields) {
+  if (!currentUser) return;
+  const { error } = await sb.from('profiles').update(fields).eq('id', currentUser.id);
+  if (!error && currentProfile) Object.assign(currentProfile, fields);
+  return !error;
+}
+
+async function bumpStreak() {
+  if (!currentUser || !currentProfile) return;
+  const today = todayStr();
+  if (currentProfile.last_streak_date !== today) {
+    streakCount++;
+    await saveProfile({ streak: streakCount, last_streak_date: today });
+    const sbStreak = document.getElementById('sbStreak');
+    if (sbStreak) sbStreak.textContent = '🔥' + streakCount;
+    const rewardsStreakEl = document.getElementById('rewardsStreakCount');
+    if (rewardsStreakEl) rewardsStreakEl.textContent = streakCount;
+    updateStats();
+    showToast(`🔥 Streak extended! ${streakCount} days`);
+  }
+}
+
+// ═══ GEM REWARDS ═══
+// +1 gem for every quiz played, +2 gems for every article (E-Note/News) read.
+const AI_DAILY_LIMIT = 3;
+const AI_GEM_THRESHOLD = 50;
+const AI_FREE_DAYS = 7;
+const AI_GEM_THRESHOLD_100 = 100;
+const AI_FREE_DAYS_100 = 30;
+
+async function awardGems(amount, label) {
+  if (!currentUser || !currentProfile) return;
+  gemCount += amount;
+  const fields = { gems: gemCount };
+  const sbGems = document.getElementById('sbGems');
+  if (sbGems) sbGems.textContent = gemCount;
+  let milestoneMsg = null;
+  // Reward tier 1: 50 gems → 7 days of unlimited free AI Tutor access (one-time grant).
+  if (gemCount >= AI_GEM_THRESHOLD && !currentProfile.ai_free_50_granted) {
+    fields.ai_free_50_granted = true;
+    const until = new Date(); until.setDate(until.getDate() + AI_FREE_DAYS);
+    const untilStr = until.toISOString().slice(0,10);
+    if (!currentProfile.ai_free_until || currentProfile.ai_free_until < untilStr) fields.ai_free_until = untilStr;
+    milestoneMsg = `🎉 50 gems reached! Unlimited AI Tutor access unlocked for ${AI_FREE_DAYS} days!`;
+  }
+  // Reward tier 2: 100 gems → 30 days of unlimited free AI, article submission, and a photo spot on the home page (one-time grant).
+  if (gemCount >= AI_GEM_THRESHOLD_100 && !currentProfile.ai_free_100_granted) {
+    fields.ai_free_100_granted = true;
+    const until = new Date(); until.setDate(until.getDate() + AI_FREE_DAYS_100);
+    const untilStr = until.toISOString().slice(0,10);
+    if (!(fields.ai_free_until || currentProfile.ai_free_until) || (fields.ai_free_until || currentProfile.ai_free_until) < untilStr) fields.ai_free_until = untilStr;
+    milestoneMsg = `🏆 100 gems reached! A month of free AI Tutor access, article submission, and a photo spot on the home page — all unlocked!`;
+  }
+  await saveProfile(fields);
+  renderRewards();
+  updateAIStatusBanner();
+  showToast(milestoneMsg || `💎 +${amount} gem${amount>1?'s':''} — ${label}!`);
+}
+
+function hasFreeAIAccess() {
+  if (!currentProfile || !currentProfile.ai_free_until) return false;
+  return currentProfile.ai_free_until >= todayStr();
+}
+
+function getAIUsageToday() {
+  if (!currentProfile) return 0;
+  const today = todayStr();
+  if (currentProfile.ai_questions_date !== today) { currentProfile.ai_questions_date = today; currentProfile.ai_questions_today = 0; }
+  return currentProfile.ai_questions_today;
+}
+
+function updateAIStatusBanner() {
+  const el = document.getElementById('aiStatusBanner');
+  if (!el || !currentUser) return;
+  if (hasFreeAIAccess()) {
+    el.innerHTML = `🎉 <strong>Unlimited free access</strong> — enjoy it until ${currentProfile.ai_free_until}!`;
+  } else {
+    const used = getAIUsageToday();
+    el.innerHTML = `${used}/${AI_DAILY_LIMIT} free questions used today · Reach <strong>${AI_GEM_THRESHOLD} gems</strong> for ${AI_FREE_DAYS} days unlimited, or <strong>${AI_GEM_THRESHOLD_100} gems</strong> for a full month (${gemCount}/${AI_GEM_THRESHOLD_100} so far)`;
+  }
+}
+
+async function readArticle(id) {
+  if (!currentUser || !currentProfile) { showToast('Please sign in first.'); return; }
+  const readArticles = currentProfile.read_articles || [];
+  if (readArticles.includes(id)) { showToast('You already earned gems for this article.'); return; }
+  await saveProfile({ read_articles: [...readArticles, id] });
+  await awardGems(2, 'article read');
+  renderEnotes();
+  renderNews();
+}
+
+// ═══ 100-GEM PERKS: article submission + home page photo ═══
+function openSubmitArticleModal() {
+  if (!currentUser || gemCount < AI_GEM_THRESHOLD_100) { showToast(`Reach ${AI_GEM_THRESHOLD_100} gems to unlock article submission.`); return; }
+  document.getElementById('artTitle').value = '';
+  document.getElementById('artBody').value = '';
+  openM('submitArticleModal');
+}
+async function submitArticle() {
+  if (!currentUser || gemCount < AI_GEM_THRESHOLD_100) { showToast(`Reach ${AI_GEM_THRESHOLD_100} gems to unlock article submission.`); return; }
+  const title = document.getElementById('artTitle').value.trim();
+  const body = document.getElementById('artBody').value.trim();
+  if (!title || !body) { showToast('Please fill in both the title and the article.'); return; }
+  const check = censorCheck(body);
+  const { error } = await sb.from('pending_articles').insert({
+    title, body: check.clean, by_name: currentUser.name, by_id: currentUser.id
+  });
+  if (error) { showToast('Could not submit: ' + error.message); return; }
+  closeM('submitArticleModal');
+  renderAdminArticles();
+  showToast('📝 Article submitted for review — Admin will post it once approved!');
+}
+function openAddPhotoModal() {
+  if (!currentUser || gemCount < AI_GEM_THRESHOLD_100) { showToast(`Reach ${AI_GEM_THRESHOLD_100} gems to unlock your photo spot.`); return; }
+  selectedGemPhoto = null;
+  document.getElementById('gemPhotoName').textContent = 'Tap to upload photo (JPG/PNG)';
+  openM('addPhotoModal');
+}
+async function submitGemPhoto() {
+  if (!currentUser || gemCount < AI_GEM_THRESHOLD_100) { showToast(`Reach ${AI_GEM_THRESHOLD_100} gems to unlock your photo spot.`); return; }
+  if (!selectedGemPhoto) { showToast('Please choose a photo first.'); return; }
+  const path = `contributors/${currentUser.id}/${Date.now()}_${selectedGemPhoto.name}`;
+  const { error: upErr } = await sb.storage.from('photos').upload(path, selectedGemPhoto);
+  if (upErr) { showToast('Photo upload failed: ' + upErr.message); return; }
+  const photoUrl = sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+  await saveProfile({ photo_url: photoUrl });
+  currentUser.photo = photoUrl;
+  closeM('addPhotoModal');
+  renderTopContributors();
+  showToast('📸 Photo added! Check the home page — you\'re on the wall now 🌟');
+}
+async function approveArticle(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can approve articles.'); return; }
+  const a = pendingArticles.find(x => x.dbId === dbId);
+  if (!a) return;
+  const { error: newsErr } = await sb.from('news_posts').insert({ title: a.title, cat: 'Community Article', body: a.body, by_name: a.by });
+  if (newsErr) { showToast('Could not post to News: ' + newsErr.message); return; }
+  await sb.from('pending_articles').delete().eq('id', dbId);
+  renderNews(); renderAdminArticles();
+  showToast('✅ Article approved and posted to News.');
+}
+async function rejectArticle(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can reject articles.'); return; }
+  const { error } = await sb.from('pending_articles').delete().eq('id', dbId);
+  if (error) { showToast('Could not decline: ' + error.message); return; }
+  renderAdminArticles();
+  showToast('Article declined.');
+}
+async function renderAdminArticles() {
+  const el = document.getElementById('adminArticlesList');
+  if (!el) return;
+  const { data, error } = await sb.from('pending_articles').select('*').order('created_at', {ascending:false});
+  if (error) { console.error('renderAdminArticles', error); return; }
+  pendingArticles = (data || []).map(a => ({dbId:a.id, title:a.title, body:a.body, by:a.by_name, submittedAt:'Recently'}));
+  el.innerHTML = pendingArticles.map((a) => `<div style="border:1px solid var(--br);border-radius:var(--r);padding:12px;margin-bottom:10px">
+    <div style="font-weight:600;font-size:13px;margin-bottom:4px">${a.title}</div>
+    <div class="ts tm" style="margin-bottom:8px">by ${a.by} · ${a.submittedAt}</div>
+    <div class="ts" style="margin-bottom:10px;line-height:1.6">${a.body}</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-green btn-xs" onclick="approveArticle('${a.dbId}')">✅ Approve & Post</button>
+      <button class="btn btn-danger btn-xs" onclick="rejectArticle('${a.dbId}')">✕ Decline</button>
+    </div>
+  </div>`).join('') || '<p class="ts tm">No article submissions right now.</p>';
+}
+async function renderTopContributors() {
+  const el = document.getElementById('topContributorsList');
+  if (!el) return;
+  const { data, error } = await sb.from('public_profiles').select('name,gems,photo_url').gte('gems', AI_GEM_THRESHOLD_100).not('photo_url','is',null).order('gems', {ascending:false});
+  if (error) { console.error('renderTopContributors', error); return; }
+  el.innerHTML = (data || []).map(u => `<div style="text-align:center;flex-shrink:0;width:76px">
+    <img src="${u.photo_url}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--pr);margin-bottom:6px">
+    <div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.name}</div>
+    <div class="ts tm" style="font-size:10px">💎 ${u.gems}</div>
+  </div>`).join('') || '<p class="ts tm">No contributors yet — reach 100 gems and add your photo to be featured!</p>';
+}
+
+function renderRewards() {
+  const totalEl = document.getElementById('rewardsGemTotal');
+  const totalEl2 = document.getElementById('rewardsGemTotal2');
+  if (!totalEl) return; // page not built yet
+  const rec = currentProfile || {quizzes_played:0, read_articles:[], photo_url:null};
+  totalEl.textContent = `${gemCount} Gems`;
+  totalEl2.textContent = gemCount;
+  document.getElementById('rewardsQuizCount').textContent = rec.quizzes_played || 0;
+  document.getElementById('rewardsArticleCount').textContent = (rec.read_articles || []).length;
+  const streakEl = document.getElementById('rewardsStreakCount');
+  if (streakEl) streakEl.textContent = streakCount;
+  const milestones = [
+    {n:10, label:'Getting Started', emoji:'🥉'},
+    {n:25, label:'On a Roll', emoji:'🥈'},
+    {n:50, label:'Gem Collector', emoji:'🥇'},
+    {n:100, label:'Edubond Star', emoji:'🏆'},
+  ];
+  const mEl = document.getElementById('rewardsMilestones');
+  if (mEl) {
+    mEl.innerHTML = milestones.map(m => {
+      const done = gemCount >= m.n;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--br);border-radius:var(--r);${done?'background:#F0FDF4':''}">
+        <span style="font-size:20px">${m.emoji}</span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${m.label}</div><div class="ts tm">${m.n} gems</div></div>
+        <span class="tag ${done?'tg':'ta'}">${done?'✅ Unlocked':'🔒 Locked'}</span>
+      </div>`;
+    }).join('');
+  }
+  const body100 = document.getElementById('rewards100Body');
+  if (body100) {
+    if (gemCount >= AI_GEM_THRESHOLD_100) {
+      const hasPhoto = rec.photo_url;
+      body100.innerHTML = `<div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="openSubmitArticleModal()">📝 Submit an Article</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPhotoModal()">${hasPhoto?'📸 Change My Photo':'📸 Add My Photo'}</button>
+        ${hasPhoto?'<span class="tag tg" style="align-self:center">✅ You\'re on the home page!</span>':''}
+      </div>`;
+    } else {
+      body100.innerHTML = `<div class="ts tm">🔒 Locked — ${gemCount}/${AI_GEM_THRESHOLD_100} gems so far. Keep playing quizzes and reading articles!</div>`;
+    }
+  }
+}
+
+// ═══ NOTES ═══
+let noteFiles = []; // local cache of rows fetched from Supabase `notes` table
+const FIXED_NOTES = [
+  {title:'Digital Technologies — Data, Computer Components & I/O Devices (Wk 1–3)',subject:'Digital Technologies',cls:'SSS 1',by:'Good Shepherd Schools',time:'1st Term',ext:'PDF',fileObj:{name:'ss1_digital_technologies_wk1-3.pdf'},url:'./ss1_digital_technologies_wk1-3.pdf'},
+  {title:'Computer Hardware & GSM Repairs — Full Scheme & Notes',subject:'Computer Hardware & GSM Repairs',cls:'SSS 1',by:'Good Shepherd Schools',time:'1st Term',ext:'DOCX',fileObj:{name:'ss1_computer_hardware_gsm_repairs.docx'},url:'./ss1_computer_hardware_gsm_repairs.docx'},
+  {title:'Computer Hardware & GSM Repairs — Advanced Hardware & Networking',subject:'Computer Hardware & GSM Repairs',cls:'SSS 2',by:'Good Shepherd Schools',time:'1st Term',ext:'DOCX',fileObj:{name:'ss2_computer_hardware_gsm_repairs.docx'},url:'./ss2_computer_hardware_gsm_repairs.docx'},
+  {title:'Mathematics — Circle Theorem, Trigonometry, Statistics & Probability',subject:'Mathematics',cls:'SSS 2',by:'Good Shepherd Schools',time:'3rd Term',ext:'DOCX',fileObj:{name:'ss2_mathematics_3rd_term.docx'},url:'./ss2_mathematics_3rd_term.docx'},
+  {title:'Chemistry — Water, Solubility & Solutions',subject:'Chemistry',cls:'SSS 2',by:'Good Shepherd Schools',time:'3rd Term',ext:'DOCX',fileObj:{name:'ss2_chemistry_3rd_term.docx'},url:'./ss2_chemistry_3rd_term.docx'},
+  {title:'Basic Science — Atomic Structure, Body Systems & Energy',subject:'Basic Science',cls:'JSS 3',by:'Good Shepherd Schools',time:'1st Term',ext:'DOCX',fileObj:{name:'js3_basic_science_1st_term.docx'},url:'./js3_basic_science_1st_term.docx'},
+];
+async function fetchNotes() {
+  const { data, error } = await sb.from('notes').select('*').order('created_at', {ascending:false});
+  noteFiles = (data || []).map(n => ({dbId:n.id, title:n.title, subject:n.subject, cls:n.class, by:n.by_name, time:'Recently', fileObj:{name:n.title}, url:n.file_url, ext:n.ext}));
+  if (error) console.error('fetchNotes', error);
+}
+async function renderNotes(filter) {
+  const list = document.getElementById('notesList');
+  if (!list) return;
+  await fetchNotes();
+  const all = [...FIXED_NOTES, ...noteFiles];
+  const fil = filter && filter !== 'all' ? all.filter(n=>n.subject===filter) : all;
+  list.innerHTML = fil.map((n,i) => {
+    const canDel = currentUser && currentUser.role==='admin';
+    const extTag = n.ext || (n.fileObj ? n.fileObj.name.split('.').pop().toUpperCase() : 'FILE');
+    const tagCls = extTag==='PDF'?'tr':extTag==='DOCX'?'tb':extTag==='PPTX'?'tp':'ta';
+    const dlBtn = n.fileObj && n.url
+      ? `<a href="${n.url}" download="${n.fileObj.name}" class="btn btn-green btn-xs">⬇ Download</a>`
+      : `<button class="btn btn-green btn-xs" onclick="showToast('Download ready in full version.')">⬇ Download</button>`;
+    const viewBtn = n.url
+      ? `<button class="btn btn-ghost btn-xs" onclick='viewNote(${JSON.stringify(n.url)},${JSON.stringify(n.title)},${JSON.stringify(extTag)})'>👁 View</button>`
+      : `<button class="btn btn-ghost btn-xs" onclick="showToast('Preview ready in full version.')">👁 View</button>`;
+    const delBtn = (canDel && n.dbId) ? `<button class="delete-btn" onclick="deleteNote('${n.dbId}')" title="Delete">🗑</button>` : '';
+    return `<div class="file-card" id="noteCard${i}">
+      <div class="file-icon fi-doc">📄</div>
+      <div class="file-meta"><div class="file-name">${n.title}</div>
+      <div class="file-info"><span>${n.by||'Teacher'}</span><span>${n.cls}</span><span>${n.time||'Recently'}</span><span class="tag ${tagCls}">${extTag}</span></div></div>
+      <div class="file-actions">${viewBtn}${dlBtn}${delBtn}</div>
+    </div>`;
+  }).join('');
+}
+
+function viewNote(url, title, ext) {
+  document.getElementById('viewNoteTitle').textContent = '📄 ' + title;
+  document.getElementById('viewNoteDownload').href = url;
+  document.getElementById('viewNoteDownload').setAttribute('download', title);
+  const body = document.getElementById('viewNoteBody');
+  const isBlob = url.startsWith('blob:');
+  if (ext === 'PDF') {
+    // PDFs render natively in-browser, no downloading required, even for freshly uploaded files.
+    body.innerHTML = `<iframe src="${url}" style="width:100%;height:75vh;border:0"></iframe>`;
+  } else if (!isBlob) {
+    // Word/PowerPoint files hosted online can be previewed via Microsoft's Office viewer.
+    body.innerHTML = `<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(location.origin + '/' + url.replace(/^\.\//,''))}" style="width:100%;height:75vh;border:0"></iframe>`;
+  } else {
+    // Freshly-uploaded Word/PowerPoint files only live on this device, so an online viewer can't reach them yet.
+    body.innerHTML = `<div style="padding:40px;text-align:center" class="tm"><div style="font-size:40px;margin-bottom:10px">📄</div>In-app preview isn't available yet for a Word/PowerPoint file you just uploaded from this device — it needs to be hosted online first. You can still download it below to open it.</div>`;
+  }
+  openM('viewNoteModal');
+}
+
+async function deleteNote(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove notes.'); return; }
+  const { error } = await sb.from('notes').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete note: ' + error.message); return; }
+  renderNotes(currentFilter); renderDashNotes(); renderAdminLists(); updateStats();
+  showToast('Note deleted.');
+}
+
+function renderDashNotes() {
+  const el = document.getElementById('dashNotesList');
+  if (!el) return;
+  const all = [{title:'Digital Technologies — Data, Computer Components & I/O Devices (Wk 1–3)',ext:'PDF'},{title:'Computer Hardware & GSM Repairs — Full Scheme & Notes',ext:'DOCX'},...noteFiles.slice(0,2)];
+  el.innerHTML = all.slice(0,4).map(n=>`<div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--br);cursor:pointer" onclick="navigate('notes')"><span>📄</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.title||n.fileObj?.name||'Note'}</span><span class="tag tb" style="font-size:10px">${n.ext||'FILE'}</span></div>`).join('');
+}
+
+// ═══ UPLOAD NOTE ═══
+function openUploadModal() {
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can upload notes.'); return;
+  }
+  document.getElementById('uTitle').value=''; document.getElementById('noteFileName').textContent='PDF, DOCX, PPTX — max 50 MB — works on phone & PC';
+  selectedNoteFile = null;
+  openM('uploadModal');
+}
+
+function onFileSelect(input, labelId) {
+  const f = input.files[0];
+  if (!f) return;
+  document.getElementById(labelId).textContent = '✅ ' + f.name + ' (' + (f.size/1024/1024).toFixed(2) + ' MB)';
+  if (labelId === 'noteFileName') selectedNoteFile = f;
+  if (labelId === 'invPhotoName') selectedInvPhoto = f;
+  if (labelId === 'gemPhotoName') selectedGemPhoto = f;
+}
+
+async function submitNote() {
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can upload notes.'); return;
+  }
+  const title = document.getElementById('uTitle').value.trim();
+  if (!title) { showToast('Please enter a title.'); return; }
+  const sub = document.getElementById('uSubject').value;
+  const cls = document.getElementById('uClass').value;
+  let url = null, ext = 'FILE';
+  if (selectedNoteFile) {
+    ext = selectedNoteFile.name.split('.').pop().toUpperCase();
+    const path = `${currentUser.id}/${Date.now()}_${selectedNoteFile.name}`;
+    const { error: upErr } = await sb.storage.from('notes').upload(path, selectedNoteFile);
+    if (upErr) { showToast('File upload failed: ' + upErr.message); return; }
+    url = sb.storage.from('notes').getPublicUrl(path).data.publicUrl;
+  }
+  const { error } = await sb.from('notes').insert({
+    title, subject: sub, class: cls, by_name: currentUser.name, by_id: currentUser.id, file_url: url, ext
+  });
+  if (error) { showToast('Could not save note: ' + error.message); return; }
+  closeM('uploadModal');
+  renderNotes(currentFilter); renderDashNotes(); renderAdminLists(); updateStats();
+  showToast('Note uploaded successfully! ✅');
+}
+
+// ═══ E-NOTES ═══
+function openEnoteModal() {
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can create E-Notes.'); return;
+  }
+  openM('enoteModal');
+}
+async function submitEnote() {
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can create E-Notes.'); return;
+  }
+  const t = document.getElementById('enTitle').value.trim();
+  if (!t) { showToast('Enter a title.'); return; }
+  const { error } = await sb.from('enotes').insert({
+    title: t, subject: document.getElementById('enSubject').value, class: document.getElementById('enClass').value,
+    by_name: currentUser.name, by_id: currentUser.id, content: document.getElementById('enContent').value, color: 'var(--pu)'
+  });
+  if (error) { showToast('Could not publish: ' + error.message); return; }
+  closeM('enoteModal'); renderEnotes();
+  showToast('E-Note published! 📄');
+}
+async function fetchEnotes() {
+  const { data, error } = await sb.from('enotes').select('*').order('created_at', {ascending:false});
+  enotes = (data || []).map(n => ({dbId:n.id, id:'enote'+n.id, title:n.title, subject:n.subject, cls:n.class, by:n.by_name, content:n.content, color:n.color}));
+  if (error) console.error('fetchEnotes', error);
+}
+async function renderEnotes() {
+  const el = document.getElementById('enotesList');
+  if (!el) return;
+  await fetchEnotes();
+  const colors=['var(--pr)','var(--gr)','var(--pu)','var(--ac)'];
+  const readIds = (currentProfile && currentProfile.read_articles) || [];
+  const all = [...FIXED_ENOTES, ...enotes];
+  el.innerHTML = all.map((n,i)=>{
+    const eid = 'enote' + n.id;
+    const alreadyRead = readIds.includes(eid) || readIds.includes(n.id);
+    const readBtn = alreadyRead
+      ? `<span class="tag tg" style="margin-left:auto">✅ Read (+2 💎 earned)</span>`
+      : `<button class="btn btn-primary btn-xs" style="margin-left:auto" onclick="readArticle('${n.dbId ? n.id : eid}')">📖 Read Article (+2 💎)</button>`;
+    return `<div class="card" style="border-left:4px solid ${n.color||colors[i%4]}">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${n.color||colors[i%4]};margin-bottom:5px">${n.subject}</div>
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:5px">${n.title}</h3>
+    <p class="ts tm" style="margin-bottom:10px">${n.content||''}</p>
+    <div style="display:flex;align-items:center;gap:8px"><span class="tag tb">${n.cls}</span><span class="ts tm">${n.by} · ${n.cls}</span>
+    ${readBtn}
+    ${(currentUser&&currentUser.role==='admin'&&n.dbId)?`<button class="delete-btn" onclick="deleteEnote('${n.dbId}')">🗑</button>`:''}
+    </div></div>`;
+  }).join('');
+}
+async function deleteEnote(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove e-notes.'); return; }
+  const { error } = await sb.from('enotes').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderEnotes(); showToast('E-Note deleted.');
+}
+
+// ═══ FORUM ═══
+async function fetchForum() {
+  const { data, error } = await sb.from('forum_posts').select('*').order('created_at', {ascending:false});
+  forumPosts = (data || []).map(p => ({dbId:p.id, name:p.name, role:p.role, msg:p.msg, time:'Recently', color:p.color, init:p.init}));
+  if (error) console.error('fetchForum', error);
+}
+async function renderForum() {
+  const c = document.getElementById('forumPosts');
+  if (!c) return;
+  await fetchForum();
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  c.innerHTML = forumPosts.map((p)=>`<div class="forum-post">
+    <div class="fav" style="background:${p.color}">${p.init}</div>
+    <div style="flex:1;min-width:0">
+      <div class="fauth">${p.name} <span style="font-weight:400;font-size:11px;color:${p.role==='Teacher'?'#92400E':'#065F46'};background:${p.role==='Teacher'?'#FEF3C7':'#DCFCE7'};padding:1px 6px;border-radius:20px;margin-left:4px">${p.role}</span></div>
+      <div class="ftime">${p.time}</div>
+      <div class="ftext">${p.msg}</div>
+      <div class="factions">
+        <button class="faction-btn" onclick="showToast('Liked!')">👍 Like</button>
+        <button class="faction-btn" onclick="showToast('Reply…')">↩️ Reply</button>
+        ${isAdmin?`<button class="faction-btn" style="color:var(--rd)" onclick="deletePost('${p.dbId}')">🗑 Delete</button>`:''}
+      </div>
+    </div></div>`).join('') || '<p class="ts tm">No posts yet — be the first to say something!</p>';
+}
+
+async function deletePost(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove posts.'); return; }
+  const { error } = await sb.from('forum_posts').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderForum(); updateStats(); showToast('Post deleted.');
+}
+
+async function postComment() {
+  const ta = document.getElementById('forumTA');
+  const txt = ta.value.trim();
+  if (!txt) { showToast('Type something first.'); return; }
+  const check = censorCheck(txt);
+  const { error } = await sb.from('forum_posts').insert({
+    user_id: currentUser.id, name: currentUser.name, role: currentUser.role.charAt(0).toUpperCase()+currentUser.role.slice(1),
+    msg: check.clean, color: currentUser.color, init: currentUser.init
+  });
+  if (error) { showToast('Could not post: ' + error.message); return; }
+  renderForum(); updateStats();
+  ta.value=''; ta.style.height='';
+  if (check.severe) {
+    flagReport(currentUser.name, 'Possible abusive language in Forum', check.clean);
+    showToast('⚠️ Posted, but flagged for admin review — please keep it respectful.');
+  } else if (check.hits > 0) {
+    showToast('⚠️ Posted — some words were masked automatically.');
+  } else {
+    showToast('Posted! 💬');
+  }
+}
+function autoR(t){t.style.height='auto';t.style.height=Math.min(t.scrollHeight,100)+'px'}
+
+// ═══ NEWS ═══
+function openNewsModal() {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can post news.'); return; }
+  document.getElementById('nTitle').value=''; document.getElementById('nBody').value='';
+  openM('newsModal');
+}
+async function submitNews() {
+  const t = document.getElementById('nTitle').value.trim();
+  if (!t) { showToast('Enter a headline.'); return; }
+  const { error } = await sb.from('news_posts').insert({
+    title: t, cat: document.getElementById('nCat').value, body: document.getElementById('nBody').value, by_name: currentUser.name
+  });
+  if (error) { showToast('Could not post news: ' + error.message); return; }
+  closeM('newsModal'); renderNews(); renderAdminLists();
+  showToast('News posted! 📰');
+}
+async function deleteNews(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove news posts.'); return; }
+  const { error } = await sb.from('news_posts').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderNews(); renderAdminLists(); showToast('Post deleted.');
+}
+async function fetchNews() {
+  const { data, error } = await sb.from('news_posts').select('*').order('created_at', {ascending:false});
+  newsPosts = (data || []).map(n => ({dbId:n.id, title:n.title, cat:n.cat, body:n.body, by:n.by_name, time:'Recently', fileUrl:n.file_url, fileName:n.file_name}));
+  if (error) console.error('fetchNews', error);
+}
+async function renderNews() {
+  const el = document.getElementById('newsList');
+  if (!el) return;
+  await fetchNews();
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  const readIds = (currentProfile && currentProfile.read_articles) || [];
+  const all = [...FIXED_NEWS, ...newsPosts];
+  el.innerHTML = all.map((n)=>{
+    const nid = 'news' + n.id; // namespaced so news ids never collide with e-note ids
+    const alreadyRead = readIds.includes(nid);
+    const readBtn = alreadyRead
+      ? `<span class="tag tg">✅ Read (+2 💎 earned)</span>`
+      : `<button class="btn btn-primary btn-xs" onclick="readArticle('${nid}')">📖 Read Article (+2 💎)</button>`;
+    return `<div class="news-card">
+    <div style="flex:1"><span class="nb nb-news">${n.cat}</span>
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">${n.title}</div>
+    <div class="ts tm" style="margin-bottom:8px;line-height:1.6">${n.body||''}</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="ts tm">${n.by} · ${n.time}</span>
+    ${n.fileUrl ? `<a href="${n.fileUrl}" download="${n.fileName||''}" class="btn btn-green btn-xs">⬇ Download</a>` : ''}
+    ${readBtn}
+    ${(isAdmin && n.dbId)?`<button class="btn btn-danger btn-xs" style="margin-left:auto" onclick="deleteNews('${n.dbId}')">🗑 Delete</button>`:''}
+    </div></div><div style="width:64px;height:64px;border-radius:var(--r);background:var(--pr-l);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">📋</div>
+  </div>`;
+  }).join('');
+}
+
+// ═══ INVENTORS ═══
+async function fetchInventors() {
+  const { data, error } = await sb.from('inventors').select('*').order('created_at', {ascending:false});
+  inventors = (data || []).map(inv => ({dbId:inv.id, name:inv.name, cls:inv.class, project:inv.project, tags:inv.tags||[], emoji:inv.emoji, color:inv.color, photoUrl:inv.photo_url}));
+  if (error) console.error('fetchInventors', error);
+}
+async function renderInventors() {
+  const g = document.getElementById('invGrid');
+  if (!g) return;
+  await fetchInventors();
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  g.innerHTML = inventors.map((inv,i)=>`<div class="inv-card" onclick="showInvDetail(${i})">
+    <div class="inv-banner" style="background:linear-gradient(135deg,${inv.color},${inv.color}99)"></div>
+    <div class="inv-av-wrap"><div class="inv-av" style="background:${inv.color}">${inv.photoUrl?`<img src="${inv.photoUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:inv.emoji}</div></div>
+    <div class="inv-name">${inv.name}</div>
+    <div class="inv-role">${inv.cls} · Robotics Club</div>
+    <div class="inv-proj">${inv.project}</div>
+    <div class="inv-tags">${inv.tags.map(t=>`<span class="inv-tag">${t}</span>`).join('')}</div>
+    ${isAdmin?`<div style="text-align:right;padding:4px 10px 10px"><button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteInv('${inv.dbId}')">🗑 Remove</button></div>`:''}
+  </div>`).join('') || '<p class="ts tm">No inventors added yet — check back soon!</p>';
+}
+
+function renderDashInv() {
+  const el = document.getElementById('dashInvList');
+  if (!el) return;
+  el.innerHTML = inventors.slice(0,3).map(inv=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--br);cursor:pointer" onclick="navigate('inventors')">
+    <div style="width:32px;height:32px;border-radius:50%;background:${inv.color};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${inv.emoji}</div>
+    <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${inv.name}</div><div class="ts tm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${inv.project}</div></div>
+  </div>`).join('') || '<p class="ts tm">No inventors yet.</p>';
+}
+
+async function deleteInv(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove inventors.'); return; }
+  const { error } = await sb.from('inventors').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderInventors(); renderDashInv(); renderAdminLists();
+  showToast(`Removed from the Hall.`);
+}
+
+function showInvDetail(i) {
+  const inv = inventors[i];
+  document.getElementById('invDetailContent').innerHTML = `
+    <div style="width:72px;height:72px;border-radius:50%;background:${inv.color};display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px">${inv.photoUrl?`<img src="${inv.photoUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:inv.emoji}</div>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:3px">${inv.name}</h2>
+    <p class="ts tm mb2">${inv.cls} · Coding & Robotics Club</p>
+    <div style="background:var(--pr-l);border-radius:var(--r);padding:11px 14px;margin-bottom:12px;text-align:left">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--pr);margin-bottom:3px">Invention</div>
+      <div style="font-size:14px;font-weight:600">${inv.project}</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-bottom:12px">${inv.tags.map(t=>`<span class="inv-tag" style="font-size:11px;padding:3px 10px">${t}</span>`).join('')}</div>
+    <p class="ts tm" style="line-height:1.7">This student inventor brought creativity and technical skill to design and build a working prototype, presented at the annual Edubond STEM Fair.</p>`;
+  openM('invDetailModal');
+}
+
+function openAddInvModal() {
+  document.getElementById('iName').value='';document.getElementById('iClass').value='';
+  document.getElementById('iProject').value='';document.getElementById('iTags').value='';
+  document.getElementById('invPhotoName').textContent='Tap to upload photo (JPG/PNG)';
+  selectedInvPhoto=null; openM('addInvModal');
+}
+
+async function submitInventor() {
+  const name=document.getElementById('iName').value.trim();
+  const proj=document.getElementById('iProject').value.trim();
+  if(!name||!proj){showToast('Please fill name and project.');return;}
+  const tags=document.getElementById('iTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const colors=['#1B4FD8','#7C3AED','#059669','#DC2626','#D97706','#0891B2'];
+  const emojis=['⚙️','💡','🤖','🔭','🔬','💻','🚀'];
+  let photoUrl = null;
+  if (selectedInvPhoto) {
+    const path = `inventors/${currentUser.id}/${Date.now()}_${selectedInvPhoto.name}`;
+    const { error: upErr } = await sb.storage.from('photos').upload(path, selectedInvPhoto);
+    if (upErr) { showToast('Photo upload failed: ' + upErr.message); return; }
+    photoUrl = sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+  }
+  const { error } = await sb.from('inventors').insert({
+    name, class: document.getElementById('iClass').value||'SSS 1', project: proj,
+    tags: tags.length?tags:['Coding','Robotics'], color: colors[inventors.length%colors.length],
+    emoji: emojis[inventors.length%emojis.length], photo_url: photoUrl, created_by: currentUser.id
+  });
+  if (error) { showToast('Could not add inventor: ' + error.message); return; }
+  closeM('addInvModal'); renderInventors(); renderDashInv(); renderAdminLists();
+  showToast(`${name} added to the Hall of Fame! 🎉`);
+}
+
+function openManageInvModal() {
+  const el = document.getElementById('manageInvList');
+  el.innerHTML = inventors.map((inv)=>`<div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--br);border-radius:var(--r)">
+    <div style="width:32px;height:32px;border-radius:50%;background:${inv.color};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${inv.emoji}</div>
+    <div style="flex:1"><div style="font-size:13px;font-weight:600">${inv.name}</div><div class="ts tm">${inv.cls} · ${inv.project}</div></div>
+    <button class="btn btn-danger btn-xs" onclick="deleteInvAndRefreshModal('${inv.dbId}')">🗑 Remove</button>
+  </div>`).join('');
+  openM('manageInvModal');
+}
+async function deleteInvAndRefreshModal(dbId) {
+  await deleteInv(dbId);
+  openManageInvModal();
+}
+
+// ═══ ADMIN LISTS ═══
+async function renderAdminUsers() {
+  const el = document.getElementById('adminUsersTable');
+  if (!el) return;
+  const { data, error } = await sb.from('profiles').select('*').order('created_at', {ascending:false});
+  if (error) { console.error('renderAdminUsers', error); return; }
+  const rows = (data || []).map(u => {
+    const tagCls = u.role === 'admin' ? 'tr' : u.role === 'teacher' ? 'ta' : 'tg';
+    const active = currentUser && currentUser.id === u.id;
+    return `<tr style="border-bottom:1px solid var(--br)"><td style="padding:8px">${u.name}</td><td style="padding:8px"><span class="tag ${tagCls}">${u.role[0].toUpperCase()+u.role.slice(1)}</span></td><td style="padding:8px">${u.email}</td><td style="padding:8px"><span class="tag ${active?'tg':'ta'}">${active?'Online now':'Registered'}</span></td></tr>`;
+  }).join('');
+  el.innerHTML = rows || '<tr><td style="padding:8px" colspan="4" class="ts tm">No users have signed up yet.</td></tr>';
+}
+function renderAdminLists() {
+  const nEl=document.getElementById('adminNewsList');
+  nEl.innerHTML=newsPosts.map((n)=>`<div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:8px;border:1px solid var(--br);border-radius:var(--r)"><span class="nb nb-news">${n.cat}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.title}</span><button class="btn btn-danger btn-xs" onclick="deleteNews('${n.dbId}')">🗑 Delete</button></div>`).join('');
+  const rEl=document.getElementById('adminNotesList');
+  const allNotes=[
+    {title:'Digital Technologies — Data, Computer Components & I/O Devices (Wk 1–3)',by:'Good Shepherd Schools'},
+    {title:'Computer Hardware & GSM Repairs — Full Scheme & Notes',by:'Good Shepherd Schools'},
+    {title:'Computer Hardware & GSM Repairs — Advanced Hardware & Networking',by:'Good Shepherd Schools'},
+    {title:'Mathematics — Circle Theorem, Trigonometry, Statistics & Probability',by:'Good Shepherd Schools'},
+    {title:'Chemistry — Water, Solubility & Solutions',by:'Good Shepherd Schools'},
+    {title:'Basic Science — Atomic Structure, Body Systems & Energy',by:'Good Shepherd Schools'},
+    ...noteFiles];
+  rEl.innerHTML=allNotes.map((n)=>`<div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:8px;border:1px solid var(--br);border-radius:var(--r)"><span>📄</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.title}</span><span class="ts tm">${n.by||'Teacher'}</span>${n.dbId?`<button class="btn btn-danger btn-xs" onclick="deleteNote('${n.dbId}')">🗑</button>`:''}</div>`).join('');
+  const iEl=document.getElementById('adminInvList');
+  iEl.innerHTML=inventors.map((inv,i)=>`<div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:8px;border:1px solid var(--br);border-radius:var(--r)"><span>${inv.emoji}</span><span style="flex:1">${inv.name}</span><span class="ts tm">${inv.cls}</span><button class="btn btn-danger btn-xs" onclick="deleteInv(${i});renderAdminLists()">🗑</button></div>`).join('');
+}
+
+// ═══ VIDEO LINKS ═══
+async function fetchVideos() {
+  const { data, error } = await sb.from('videos').select('*').order('created_at', {ascending:false});
+  videoLinks = (data || []).map(v => ({dbId:v.id, title:v.title, subject:v.subject, cls:v.class, dur:v.dur, platform:v.platform, url:v.url, tagCls:v.tag_cls, g1:v.g1, g2:v.g2}));
+  if (error) console.error('fetchVideos', error);
+}
+async function renderVideos() {
+  const g = document.getElementById('videoGrid');
+  if (!g) return;
+  await fetchVideos();
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  g.innerHTML = videoLinks.map((v) => `<div class="card">
+    <div style="height:120px;background:linear-gradient(135deg,${v.g1},${v.g2});border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:36px;color:rgba(255,255,255,.9);margin-bottom:12px" onclick="${v.url ? `window.open(${JSON.stringify(v.url)},'_blank')` : `showToast('No link was provided for this video.')`}">▶</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:3px">${v.title}</div>
+    <div class="ts tm">${v.subject} · ${v.cls} · ${v.dur}</div>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span class="tag ${v.tagCls}">${v.platform}</span>
+    ${isAdmin ? `<button class="btn btn-danger btn-xs" style="margin-left:auto" onclick="deleteVideo('${v.dbId}')">🗑 Delete</button>` : ''}
+    </div></div>`).join('') || '<p class="ts tm">No videos added yet.</p>';
+}
+async function submitVideo() {
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can add video links.'); return;
+  }
+  const title = document.getElementById('vTitle').value.trim();
+  const url = document.getElementById('vUrl').value.trim();
+  if (!title) { showToast('Please enter a title.'); return; }
+  if (!url) { showToast('Please paste a video link.'); return; }
+  const gradients = [['#1B4FD8','#7C3AED'],['#059669','#1B4FD8'],['#7C3AED','#DC2626'],['#D97706','#DC2626'],['#0891B2','#1B4FD8']];
+  const tagClasses = ['tb','tg','tp','ta','tr'];
+  const g = gradients[videoLinks.length % gradients.length];
+  let platform = 'Video';
+  if (/youtube|youtu\.be/i.test(url)) platform = 'YouTube';
+  else if (/vimeo/i.test(url)) platform = 'Vimeo';
+  const { error } = await sb.from('videos').insert({
+    title, subject:document.getElementById('vSubject').value, class:document.getElementById('vClass').value,
+    dur:document.getElementById('vDur').value.trim() || '—', platform, url,
+    tag_cls:tagClasses[videoLinks.length % tagClasses.length], g1:g[0], g2:g[1]
+  });
+  if (error) { showToast('Could not save video: ' + error.message); return; }
+  closeM('linkModal'); renderVideos();
+  showToast('Video link added! 🎬');
+}
+async function deleteVideo(dbId) {
+  if (!currentUser || currentUser.role !== 'admin') { showToast('Only Admin can remove videos.'); return; }
+  const { error } = await sb.from('videos').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderVideos(); showToast('Video removed.');
+}
+
+// ═══ ADMIN REPORTS ═══
+async function renderReports() {
+  const el = document.getElementById('adminReportsList');
+  if (!el) return;
+  const { data, error } = await sb.from('reports').select('*').order('created_at', {ascending:false});
+  if (error) { console.error('renderReports', error); return; }
+  reports = (data || []).map(r => ({dbId:r.id, issue:r.issue, by:r.by_name, time:'Recently', status:r.status, detail:r.detail}));
+  el.innerHTML = reports.map((r) => `<div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:var(--r);padding:12px;display:flex;gap:10px;align-items:flex-start;font-size:13px;margin-bottom:10px">
+    <span>⚠️</span>
+    <div style="flex:1"><strong>${r.issue}</strong><br><span class="tm ts">${r.by} · ${r.time} · Status: <span style="color:${r.status==='Resolved'?'var(--gr)':'var(--ac)'};font-weight:600">${r.status}</span></span>
+    ${r.detail ? `<div class="ts tm" style="margin-top:4px;font-style:italic">"${r.detail}"</div>` : ''}</div>
+    ${r.status!=='Resolved' ? `<button class="btn btn-ghost btn-xs" style="flex-shrink:0" onclick="resolveReport('${r.dbId}')">Resolve</button>` : ''}
+  </div>`).join('');
+}
+async function resolveReport(dbId) {
+  const { error } = await sb.from('reports').update({status:'Resolved'}).eq('id', dbId);
+  if (error) { showToast('Could not update: ' + error.message); return; }
+  renderReports(); showToast('Marked as reviewed.');
+}
+function submitUserReport() {
+  const type = document.getElementById('rpType').value;
+  const desc = document.getElementById('rpDesc').value.trim();
+  if (!desc) { showToast('Please describe the issue.'); return; }
+  const check = censorCheck(desc);
+  flagReport(currentUser ? currentUser.name : 'Anonymous', type, check.clean);
+  document.getElementById('rpDesc').value = '';
+  showToast('Report submitted. We will review within 24 hrs. 🚩');
+}
+
+// ═══ ASK AI TUTOR ═══
+function appendAIMsg(role, text) {
+  const box = document.getElementById('aiChatBox');
+  const isUser = role === 'user';
+  const bubble = document.createElement('div');
+  bubble.style.cssText = `align-self:${isUser?'flex-end':'flex-start'};max-width:80%;background:${isUser?'var(--pr)':'var(--bg)'};color:${isUser?'#fff':'var(--tx)'};padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.65;white-space:pre-wrap`;
+  bubble.textContent = text;
+  box.appendChild(bubble);
+  box.scrollTop = box.scrollHeight;
+  return bubble;
+}
+async function askAI() {
+  const input = document.getElementById('aiInput');
+  let q = input.value.trim();
+  if (!q) { showToast('Type a question first.'); return; }
+  if (!hasFreeAIAccess()) {
+    const used = getAIUsageToday();
+    if (used >= AI_DAILY_LIMIT) {
+      showToast(`⚠️ You've used today's ${AI_DAILY_LIMIT} free questions. Reach ${AI_GEM_THRESHOLD} gems for a week of unlimited access, or ${AI_GEM_THRESHOLD_100} gems for a month!`);
+      return;
+    }
+  }
+  const check = censorCheck(q);
+  if (check.severe) {
+    flagReport(currentUser ? currentUser.name : 'Unknown', 'Abusive language in Ask AI', check.clean);
+    showToast('⚠️ Please ask respectfully. This has been flagged for review.');
+    input.value = ''; input.style.height = '';
+    return;
+  }
+  q = check.clean;
+  if (currentUser && currentProfile) {
+    getAIUsageToday(); // ensures the date is current before incrementing
+    currentProfile.ai_questions_today++;
+    saveProfile({ ai_questions_today: currentProfile.ai_questions_today, ai_questions_date: currentProfile.ai_questions_date });
+  }
+  updateAIStatusBanner();
+  appendAIMsg('user', q);
+  aiHistory.push({role:'user', content:q});
+  input.value = ''; input.style.height = '';
+  const sendBtn = document.getElementById('aiSendBtn');
+  sendBtn.disabled = true; sendBtn.textContent = '…';
+  const thinkingBubble = appendAIMsg('assistant', 'Thinking…');
+  const endpoint = AI_PROXY_URL || "https://api.anthropic.com/v1/messages";
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        system: "You are a friendly, patient AI tutor for Nigerian secondary school (JSS/SSS) students on the Edubond platform. Explain concepts simply and step-by-step, using relatable examples. Keep answers clear, encouraging, and appropriately concise.",
+        messages: aiHistory
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).map(b => b.text || '').join('\n').trim() || "Sorry, I couldn't come up with an answer. Try rephrasing your question.";
+    thinkingBubble.textContent = text;
+    aiHistory.push({role:'assistant', content:text});
+  } catch (err) {
+    thinkingBubble.textContent = AI_PROXY_URL
+      ? "⚠️ I couldn't reach the AI service right now. Please try again in a moment."
+      : "⚠️ AI Tutor isn't connected yet. This app needs a small backend to hold your API key — see the setup instructions in ai-proxy-worker.js, then add its URL to AI_PROXY_URL near the top of this file's JavaScript section.";
+  }
+  document.getElementById('aiChatBox').scrollTop = document.getElementById('aiChatBox').scrollHeight;
+  sendBtn.disabled = false; sendBtn.textContent = 'Send';
+}
+
+// ═══ DAILY QUIZ CHALLENGE ═══
+// One shared quiz per calendar day, on a random real-world topic. First person to load the
+// app each day triggers creation (via AI if connected, otherwise a rotating fallback topic
+// bank below); everyone else that day just reads the same one. Playing it (like any quiz)
+// extends the daily streak.
+const DAILY_QUIZ_FALLBACK_TOPICS = [
+  {topic:'The Solar System', subject:'Astronomy', questions:[
+    {q:'Which planet is known as the Red Planet?', opts:['Venus','Mars','Jupiter','Saturn'], correct:1, explain:'Mars appears red due to iron oxide (rust) covering its surface.'},
+    {q:'What is the largest planet in our solar system?', opts:['Earth','Saturn','Jupiter','Neptune'], correct:2, explain:'Jupiter is the largest planet, more than 11 times the diameter of Earth.'},
+    {q:'How long does it take Earth to orbit the Sun?', opts:['24 hours','30 days','365 days','100 days'], correct:2, explain:'One orbit around the Sun takes about 365.25 days — a year.'},
+  ]},
+  {topic:'Ancient Egypt', subject:'History', questions:[
+    {q:'What were Egyptian pharaohs often buried in?', opts:['Caves','Pyramids','Rivers','Forests'], correct:1, explain:'Pyramids were built as elaborate tombs for pharaohs and their treasures.'},
+    {q:'Which river was central to Ancient Egyptian civilization?', opts:['Amazon','Nile','Congo','Niger'], correct:1, explain:'The Nile provided water, fertile soil, and transport for ancient Egypt.'},
+    {q:'What writing system did Ancient Egyptians use?', opts:['Cuneiform','Hieroglyphics','Braille','Cyrillic'], correct:1, explain:'Hieroglyphics used pictures and symbols to represent words and sounds.'},
+  ]},
+  {topic:'The Human Body', subject:'Biology', questions:[
+    {q:'How many chambers does the human heart have?', opts:['2','3','4','5'], correct:2, explain:'The heart has four chambers: two atria and two ventricles.'},
+    {q:'What is the largest organ in the human body?', opts:['Liver','Brain','Skin','Lungs'], correct:2, explain:'The skin is the body\'s largest organ, protecting everything inside.'},
+    {q:'Which part of the body produces insulin?', opts:['Liver','Pancreas','Kidney','Stomach'], correct:1, explain:'The pancreas produces insulin, which helps regulate blood sugar.'},
+  ]},
+  {topic:'World Geography', subject:'Geography', questions:[
+    {q:'What is the longest river in the world?', opts:['Amazon','Nile','Yangtze','Mississippi'], correct:1, explain:'The Nile, at about 6,650 km, is generally considered the longest river.'},
+    {q:'Which is the largest desert in the world?', opts:['Sahara','Gobi','Antarctic','Kalahari'], correct:2, explain:'The Antarctic Desert is the largest, as deserts are defined by low precipitation, not heat.'},
+    {q:'Which continent has the most countries?', opts:['Asia','Africa','Europe','South America'], correct:1, explain:'Africa has 54 recognized countries, more than any other continent.'},
+  ]},
+  {topic:'Inventions & Technology', subject:'Technology', questions:[
+    {q:'Who is credited with inventing the telephone?', opts:['Thomas Edison','Alexander Graham Bell','Nikola Tesla','Isaac Newton'], correct:1, explain:'Alexander Graham Bell patented the telephone in 1876.'},
+    {q:'What does "www" stand for?', opts:['World Wide Web','World Wide Wire','Web World Wide','Wide World Web'], correct:0, explain:'WWW stands for World Wide Web, the system of linked web pages.'},
+    {q:'What was the first widely-used programming language?', opts:['Python','Java','FORTRAN','C++'], correct:2, explain:'FORTRAN, developed in the 1950s, was among the first high-level programming languages.'},
+  ]},
+  {topic:'Ocean Life', subject:'Biology', questions:[
+    {q:'What is the largest animal on Earth?', opts:['African Elephant','Blue Whale','Great White Shark','Giraffe'], correct:1, explain:'The blue whale can grow up to 30 meters long — the largest animal known to exist.'},
+    {q:'How do fish breathe underwater?', opts:['Lungs','Gills','Skin only','They don\'t breathe'], correct:1, explain:'Gills extract dissolved oxygen from water as it passes over them.'},
+    {q:'What is a group of fish called?', opts:['A pack','A herd','A school','A flock'], correct:2, explain:'A group of fish swimming together is called a school.'},
+  ]},
+  {topic:'World Mythology', subject:'Culture', questions:[
+    {q:'In Greek mythology, who is the king of the gods?', opts:['Poseidon','Hades','Zeus','Apollo'], correct:2, explain:'Zeus ruled over Mount Olympus as king of the Greek gods.'},
+    {q:'In Yoruba mythology, who is the god of thunder?', opts:['Ogun','Sango','Esu','Obatala'], correct:1, explain:'Sango (Shango) is revered as the orisha of thunder and lightning.'},
+    {q:'What creature guards treasure in many myths worldwide?', opts:['Dragons','Owls','Rabbits','Dolphins'], correct:0, explain:'Dragons appear across many cultures as powerful treasure-guarding creatures.'},
+  ]},
+  {topic:'Sports Around the World', subject:'Sports', questions:[
+    {q:'How many players are on a football (soccer) team on the field?', opts:['9','10','11','12'], correct:2, explain:'Each football team fields 11 players, including the goalkeeper.'},
+    {q:'In which country did the sport of table tennis originate?', opts:['China','England','Japan','USA'], correct:1, explain:'Table tennis originated in England in the late 19th century.'},
+    {q:'How often are the Summer Olympic Games held?', opts:['Every 2 years','Every 4 years','Every 5 years','Every year'], correct:1, explain:'The Summer Olympics take place every four years.'},
+  ]},
+  {topic:'Music & Instruments', subject:'Arts', questions:[
+    {q:'Which instrument has 88 keys?', opts:['Guitar','Piano','Violin','Flute'], correct:1, explain:'A standard piano has 88 keys: 52 white and 36 black.'},
+    {q:'Which family of instruments does the violin belong to?', opts:['Brass','Percussion','String','Woodwind'], correct:2, explain:'The violin is a string instrument, played with a bow.'},
+    {q:'What do we call a group of singers performing together?', opts:['An orchestra','A choir','A band','A quartet'], correct:1, explain:'A choir is a group of singers who perform together.'},
+  ]},
+  {topic:'Weather & Climate', subject:'Earth Science', questions:[
+    {q:'What instrument measures atmospheric pressure?', opts:['Thermometer','Barometer','Hygrometer','Anemometer'], correct:1, explain:'A barometer measures air pressure, useful for predicting weather changes.'},
+    {q:'What causes thunder?', opts:['Wind','Rapidly expanding heated air from lightning','Rain hitting the ground','Clouds colliding'], correct:1, explain:'Lightning heats the air so fast it expands explosively, creating the sound of thunder.'},
+    {q:'What is the water cycle stage where water rises as vapor?', opts:['Precipitation','Evaporation','Collection','Condensation'], correct:1, explain:'Evaporation is when liquid water turns to vapor and rises into the atmosphere.'},
+  ]},
+];
+
+function dayOfYear() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  return Math.floor((now - start) / 86400000);
+}
+
+async function generateDailyQuizViaAI() {
+  if (!AI_PROXY_URL) return null;
+  try {
+    const endpoint = AI_PROXY_URL;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1200,
+        system: "You generate a short daily trivia quiz for secondary school students. Pick ANY interesting, appropriate, real-world topic (science, history, geography, culture, technology, nature, etc.) — a different one each time. Respond with ONLY a raw JSON object, no markdown fences, no commentary, in exactly this shape: {\"topic\":\"...\",\"subject\":\"...\",\"questions\":[{\"q\":\"...\",\"opts\":[\"...\",\"...\",\"...\",\"...\"],\"correct\":0,\"explain\":\"...\"}, ...]} with exactly 5 questions, each with exactly 4 options and a 0-indexed correct answer.",
+        messages: [{role:'user', content:'Generate today\'s daily quiz.'}]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).map(b => b.text || '').join('').trim();
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    if (parsed && parsed.topic && Array.isArray(parsed.questions) && parsed.questions.length > 0) return parsed;
+    return null;
+  } catch (e) {
+    console.error('generateDailyQuizViaAI failed, falling back', e);
+    return null;
+  }
+}
+
+async function getOrCreateDailyQuiz() {
+  const today = todayStr();
+  const { data: existing } = await sb.from('daily_quiz').select('*').eq('quiz_date', today).maybeSingle();
+  if (existing) return existing;
+
+  // Nobody has today's quiz yet — build one (AI if connected, otherwise the fallback bank) and try to save it.
+  let quizData = await generateDailyQuizViaAI();
+  if (!quizData) {
+    const pick = DAILY_QUIZ_FALLBACK_TOPICS[dayOfYear() % DAILY_QUIZ_FALLBACK_TOPICS.length];
+    quizData = { topic: pick.topic, subject: pick.subject, questions: pick.questions };
+  }
+  const { data: inserted, error } = await sb.from('daily_quiz').insert({
+    quiz_date: today, topic: quizData.topic, subject: quizData.subject, questions: quizData.questions
+  }).select().single();
+  if (error) {
+    // Someone else generated today's quiz a moment before us — just read theirs.
+    const { data: raced } = await sb.from('daily_quiz').select('*').eq('quiz_date', today).maybeSingle();
+    return raced;
+  }
+  return inserted;
+}
+
+// ═══ QUIZ ═══
+function selOpt(el){const p=el.closest('.quiz-card');p.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
+
+async function fetchQuizzes() {
+  const { data, error } = await sb.from('quizzes').select('*').order('created_at', {ascending:false});
+  dynamicQuizzes = (data || []).map(q => ({dbId:q.id, subject:q.subject, title:q.title, teacher:q.created_by, cls:q.class, timeLimit:q.time_limit, questions:q.questions, isPublic:q.is_public, createdBy:q.created_by}));
+  quizzes = [...FIXED_QUIZZES, ...dynamicQuizzes];
+  if (error) console.error('fetchQuizzes', error);
+  // Daily Challenge always goes first, so it's index 0 and startQuiz(0) reaches it.
+  try {
+    const daily = await getOrCreateDailyQuiz();
+    if (daily) {
+      quizzes.unshift({
+        title: `🌟 Daily Challenge: ${daily.topic}`, subject: daily.subject || 'Daily Challenge',
+        cls: 'Everyone', timeLimit: 300, questions: daily.questions, isDaily: true, isPublic: true
+      });
+    }
+  } catch (e) { console.error('daily quiz load failed', e); }
+}
+async function renderQuizList() {
+  const el = document.getElementById('quizListWrap');
+  if (!el) return;
+  await fetchQuizzes();
+  el.innerHTML = quizzes.map((q,i) => {
+    const isMine = currentUser && q.createdBy === currentUser.id;
+    const privateTag = (q.isPublic === false) ? `<span class="tag ta" style="margin-left:6px">🔒 Private${isMine?' (only you can see this)':''}</span>` : '';
+    if (q.isDaily) {
+      return `<div class="card" style="background:linear-gradient(135deg,#0F2E8A 0%,#312E81 60%,#1B4FD8 100%);color:#fff;grid-column:1/-1">
+      <div class="fc gap2 mb1"><span style="font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif">${q.title}</span></div>
+      <div style="font-size:13px;opacity:.85;margin-bottom:10px">${q.subject} · ${q.questions.length} questions · ${Math.round(q.timeLimit/60)} min · New topic every day! Playing this counts toward your streak too.</div>
+      <button class="btn" style="background:#fff;color:var(--pr);font-weight:700" onclick="startQuiz(${i})">▶ Play Today's Challenge</button>
+    </div>`;
+    }
+    return `<div class="card">
+    <div class="fc gap2 mb1"><span style="font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif">${q.title}</span>${privateTag}</div>
+    <div class="ts tm mb2">${q.subject} · ${q.cls || 'All levels'} · ${q.questions.length} questions · ${Math.round(q.timeLimit/60)} min</div>
+    <div class="flex gap2">
+      <button class="btn btn-primary btn-sm" onclick="startQuiz(${i})">▶ Start Quiz</button>
+      ${((currentUser && currentUser.role === 'admin') || isMine) && q.dbId ? `<button class="btn btn-danger btn-sm" onclick="deleteQuiz('${q.dbId}')">🗑 Delete</button>` : ''}
+    </div>
+  </div>`;
+  }).join('') || '<p class="ts tm">No quizzes available yet.</p>';
+  updateStats();
+}
+async function deleteQuiz(dbId) {
+  const q = dynamicQuizzes.find(x => x.dbId === dbId);
+  const isMine = currentUser && q && q.createdBy === currentUser.id;
+  if (!currentUser || (currentUser.role !== 'admin' && !isMine)) { showToast('Only Admin (or the quiz\'s creator) can remove this quiz.'); return; }
+  const { error } = await sb.from('quizzes').delete().eq('id', dbId);
+  if (error) { showToast('Could not delete: ' + error.message); return; }
+  renderQuizList(); showToast('Quiz deleted.');
+}
+
+function startQuiz(i) {
+  currentQuiz = quizzes[i];
+  currentQIndex = 0;
+  quizAnswers = new Array(currentQuiz.questions.length).fill(null);
+  quizChecked = new Array(currentQuiz.questions.length).fill(false);
+  quizTimeLeft = currentQuiz.timeLimit;
+  document.getElementById('quizListWrap').style.display = 'none';
+  document.getElementById('quizActiveWrap').style.display = 'block';
+  document.getElementById('quizActiveMeta').innerHTML = `📌 <strong>${currentQuiz.title}</strong> · ${currentQuiz.questions.length} questions`;
+  clearInterval(quizTimerInterval);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(() => {
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if (quizTimeLeft <= 0) { clearInterval(quizTimerInterval); showToast("⏱ Time's up! Submitting your quiz…"); submitQuiz(); }
+  }, 1000);
+  renderQuizQuestion();
+}
+function updateQuizTimerDisplay() {
+  const m = Math.floor(Math.max(quizTimeLeft,0) / 60).toString().padStart(2,'0');
+  const s = Math.max(quizTimeLeft,0) % 60;
+  const el = document.getElementById('quizTimer');
+  if (el) {
+    el.textContent = `⏱ ${m}:${s.toString().padStart(2,'0')}`;
+    el.style.color = quizTimeLeft <= 30 ? 'var(--rd)' : 'var(--ac)';
+  }
+}
+function renderQuizQuestion() {
+  const q = currentQuiz.questions[currentQIndex];
+  document.getElementById('quizQMeta').textContent = `Question ${currentQIndex+1} of ${currentQuiz.questions.length} · ${currentQuiz.subject}`;
+  document.getElementById('quizQText').textContent = q.q;
+  const prog = document.getElementById('quizProg');
+  prog.innerHTML = currentQuiz.questions.map((_,i) => `<div class="qdot ${i < currentQIndex ? 'done' : i === currentQIndex ? 'cur' : ''}"></div>`).join('');
+  const selected = quizAnswers[currentQIndex];
+  const checked = quizChecked[currentQIndex];
+  document.getElementById('quizOpts').innerHTML = q.opts.map((opt,i) => {
+    let cls = 'quiz-opt';
+    if (checked) {
+      if (i === q.correct) cls += ' selected';
+      else if (i === selected) cls += '';
+    } else if (i === selected) cls += ' selected';
+    let style = '';
+    if (checked) {
+      if (i === q.correct) style = 'border-color:var(--gr);background:var(--gr-l);color:var(--gr);font-weight:600';
+      else if (i === selected) style = 'border-color:var(--rd);background:var(--rd-l);color:var(--rd)';
+    }
+    return `<div class="${cls}" style="${style}" onclick="${checked ? '' : `selOptData(${i})`}"><div class="quiz-radio"></div> ${opt}</div>`;
+  }).join('');
+  const explainBox = document.getElementById('quizExplainBox');
+  if (checked) {
+    explainBox.style.display = 'block';
+    explainBox.innerHTML = `<strong style="color:${selected===q.correct?'var(--gr)':'var(--rd)'}">${selected===q.correct ? '✅ Correct!' : '❌ Not quite.'}</strong><br>${q.explain}`;
+  } else {
+    explainBox.style.display = 'none';
+    explainBox.innerHTML = '';
+  }
+  document.getElementById('quizNextBtn').textContent = currentQIndex === currentQuiz.questions.length - 1 ? 'Finish ✓' : 'Next →';
+}
+function selOptData(i) {
+  if (quizChecked[currentQIndex]) return;
+  quizAnswers[currentQIndex] = i;
+  quizChecked[currentQIndex] = true;
+  renderQuizQuestion();
+}
+function nextQuestion() {
+  if (currentQIndex < currentQuiz.questions.length - 1) {
+    currentQIndex++;
+    renderQuizQuestion();
+  } else {
+    submitQuiz();
+  }
+}
+function quitQuiz() {
+  clearInterval(quizTimerInterval);
+  currentQuiz = null;
+  document.getElementById('quizActiveWrap').style.display = 'none';
+  document.getElementById('quizListWrap').style.display = 'grid';
+  showToast('Quiz exited.');
+}
+async function submitQuiz() {
+  clearInterval(quizTimerInterval);
+  const total = currentQuiz.questions.length;
+  let score = 0;
+  currentQuiz.questions.forEach((q,i) => { if (quizAnswers[i] === q.correct) score++; });
+  const pct = Math.round((score/total)*100);
+  if (currentUser) {
+    const { error } = await sb.from('quiz_results').insert({ user_id: currentUser.id, quiz_title: currentQuiz.title, score, total });
+    if (error) console.error('submitQuiz result save', error);
+  }
+  document.getElementById('quizActiveWrap').style.display = 'none';
+  document.getElementById('quizListWrap').style.display = 'grid';
+  renderQuizResults();
+  bumpStreak();
+  if (currentUser && currentProfile) {
+    const newCount = (currentProfile.quizzes_played || 0) + 1;
+    saveProfile({ quizzes_played: newCount });
+    awardGems(1, 'quiz played');
+  }
+  switchTab('quiz','results', document.getElementById('quizTabResults'));
+  currentQuiz = null;
+  showToast(`Quiz submitted! Score: ${score}/${total} 🎉`);
+}
+async function renderQuizResults() {
+  const el = document.getElementById('quizResultsList');
+  if (!el) return;
+  if (!currentUser) { el.innerHTML = ''; return; }
+  const { data, error } = await sb.from('quiz_results').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false});
+  if (error) { console.error('renderQuizResults', error); return; }
+  quizResults = (data || []).map(r => ({title:r.quiz_title, score:r.score, total:r.total, pct: Math.round((r.score/r.total)*100), date:'Recently'}));
+  if (quizResults.length === 0) {
+    el.innerHTML = '<p class="ts tm">You haven\'t completed any quizzes yet — take one to see your results here!</p>';
+    return;
+  }
+  el.innerHTML = quizResults.map(r => {
+    const grade = r.pct >= 80 ? 'Excellent' : r.pct >= 60 ? 'Good' : 'Needs Work';
+    const gradeCls = r.pct >= 80 ? 'tg' : r.pct >= 60 ? 'ta' : 'tr';
+    return `<div class="card mb2">
+      <div class="fc gap3 mb1"><div style="font-size:36px;font-weight:700;color:var(--gr);font-family:'Space Grotesk',sans-serif">${r.score}/${r.total}</div>
+      <div><div style="font-size:14px;font-weight:600">${r.title}</div><div class="ts tm">${r.date}</div></div>
+      <span class="tag ${gradeCls}" style="margin-left:auto">${grade}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══ CREATE QUIZ (teacher/admin) ═══
+let qzRowCount = 0;
+function openCreateQuizModal() {
+  if (!currentUser) { showToast('Please sign in first.'); return; }
+  document.getElementById('qzTitle').value = '';
+  document.getElementById('qzTime').value = 10;
+  document.getElementById('qzPublic').checked = true;
+  document.getElementById('qzQuestionsWrap').innerHTML = '';
+  qzRowCount = 0;
+  addQuizQuestionRow();
+  openM('createQuizModal');
+}
+function addQuizQuestionRow() {
+  const wrap = document.getElementById('qzQuestionsWrap');
+  const id = qzRowCount++;
+  const row = document.createElement('div');
+  row.className = 'card mb2'; row.id = 'qzRow'+id;
+  row.innerHTML = `
+    <div class="fc gap2 mb1"><strong class="ts">Question ${id+1}</strong>
+      <button class="btn btn-ghost btn-xs" style="margin-left:auto" onclick="document.getElementById('qzRow${id}').remove()">🗑 Remove</button></div>
+    <div class="form-group"><input class="form-input" placeholder="Question text" id="qzQ${id}"></div>
+    <div class="cg2">
+      <div class="form-group"><input class="form-input" placeholder="Option A" id="qzOpt${id}_0"></div>
+      <div class="form-group"><input class="form-input" placeholder="Option B" id="qzOpt${id}_1"></div>
+      <div class="form-group"><input class="form-input" placeholder="Option C" id="qzOpt${id}_2"></div>
+      <div class="form-group"><input class="form-input" placeholder="Option D" id="qzOpt${id}_3"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Correct answer</label>
+      <select class="form-input form-select" id="qzCorrect${id}"><option value="0">Option A</option><option value="1">Option B</option><option value="2">Option C</option><option value="3">Option D</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Explanation (shown after answering)</label><textarea class="form-input" rows="2" placeholder="Why is this the correct answer?" id="qzExplain${id}"></textarea></div>`;
+  wrap.appendChild(row);
+}
+async function submitQuizCreate() {
+  if (!currentUser) { showToast('Please sign in first.'); return; }
+  const title = document.getElementById('qzTitle').value.trim();
+  if (!title) { showToast('Please enter a quiz title.'); return; }
+  const questions = [];
+  for (let i = 0; i < qzRowCount; i++) {
+    const qEl = document.getElementById('qzQ'+i);
+    if (!qEl) continue;
+    const qText = qEl.value.trim();
+    const opts = [0,1,2,3].map(j => document.getElementById(`qzOpt${i}_${j}`).value.trim());
+    if (!qText || opts.some(o => !o)) continue;
+    questions.push({
+      q: qText, opts,
+      correct: parseInt(document.getElementById('qzCorrect'+i).value, 10),
+      explain: document.getElementById('qzExplain'+i).value.trim() || 'No explanation provided.'
+    });
+  }
+  if (questions.length === 0) { showToast('Please fill in at least one complete question.'); return; }
+  const minutes = parseInt(document.getElementById('qzTime').value, 10) || 10;
+  const isPublic = document.getElementById('qzPublic').checked;
+  const { error } = await sb.from('quizzes').insert({
+    subject: document.getElementById('qzSubject').value, title,
+    class: document.getElementById('qzClass').value, time_limit: minutes * 60,
+    questions, created_by: currentUser.id, is_public: isPublic
+  });
+  if (error) { showToast('Could not publish: ' + error.message); return; }
+  closeM('createQuizModal');
+  renderQuizList();
+  showToast(isPublic ? 'Quiz published for everyone! ✅' : 'Private quiz saved — only you can see it. 🔒');
+}
+
+// ═══ MODALS ═══
+function openM(id){document.getElementById(id).classList.add('open')}
+function closeM(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal-ov'))e.target.classList.remove('open')});
+
+// ═══ CHIPS ═══
+function filterChip(el, group, val){
+  document.querySelectorAll(`#${group} .chip`).forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = val || el.textContent.trim();
+  if(group==='notesChips') renderNotes(currentFilter==='All'||currentFilter==='all'?null:currentFilter);
+}
+
+// ═══ TABS ═══
+function switchTab(sec,tab,el){
+  const pg=document.getElementById('page-'+sec);
+  pg.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  pg.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const panel=document.getElementById(sec+'-'+tab);
+  if(panel) panel.classList.add('active');
+}
+
+// ═══ LINK MODAL ═══
+function openLinkModal(){
+  if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+    showToast('Only teachers or admins can add video links.'); return;
+  }
+  openM('linkModal')
+}
+
+// ═══ TOAST ═══
+let tt;
+function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),3200)}
+
+// Auto-fill demo on page load
+// No auto-fill on load — accounts are created via the Sign Up screen.
+</script>
+</body>
+</html>
